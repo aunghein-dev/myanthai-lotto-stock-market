@@ -1,9 +1,12 @@
 async function generateCalendar() {
-  const container = document.getElementById("calendar-container");
 
   const currentDate = new Date();
+  let todayStr = currentDate.toISOString().split('T')[0];
+  const container = document.getElementById("calendar-container");
   const startYear = currentDate.getFullYear();
   const startMonth = currentDate.getMonth();
+  const isTodayContainer =  (paramDtStr) =>  (paramDtStr === todayStr)? "today-date-box" : "" ;
+
   const formattedMonths = (formatYr, formatMn) => {
     // Format the date to get full month name and year
     const formattedDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(new Date(formatYr, formatMn - 1));
@@ -13,9 +16,9 @@ async function generateCalendar() {
   }
   
 
-  // Calculate the end year and end month for the last 1 months
+  // Calculate the end year and end month for the last 6 months
   let endYear = startYear;
-  let endMonth = startMonth - 3;
+  let endMonth = startMonth - 1;
 
   if (endMonth < 0) {
     endMonth += 12;
@@ -67,7 +70,7 @@ async function generateCalendar() {
       } else if (day <= lastDate) {
         let dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         rowContent += `
-          <td class="day-cell" data-date="${dateStr}">
+          <td class="day-cell ${isTodayContainer(dateStr)}" data-date="${dateStr}">
             <div class="day-container">
               <div class="day-of-month">${day}</div>
               <div class="day-result-container"> 
@@ -89,7 +92,7 @@ async function generateCalendar() {
         if (day <= lastDate) {
           let dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
           rowContent += `
-            <td class="day-cell" data-date="${dateStr}">
+            <td class="day-cell ${isTodayContainer(dateStr)}" data-date="${dateStr}">
               <div class="day-container">
                 <div class="day-of-month">${day}</div>
                 <div class="day-result-container"> 
@@ -161,7 +164,7 @@ async function renderingResultsIntoCalendar() {
 // Wait for all calendars before rendering data
 async function generatePastMonths() {
   const now = new Date();
-  for (let i = 5; i >= 0; i--) {
+  for (let i = 2; i >= 0; i--) {
     let date = new Date(now.getFullYear(), now.getMonth() - i, 1);
     await generateCalendar(date.getFullYear(), date.getMonth());
   }
