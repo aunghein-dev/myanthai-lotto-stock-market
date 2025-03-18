@@ -6,19 +6,25 @@ let lastUpdatedTime = null; // Store the last known API update time
 let isHoliday = false;
 
 
-let cachedMorning = {
+let fetchMainInterval = null;
+let fetchNewInterval = null;
+let clockInterval = null;
+
+
+let cachedMorning = JSON.parse(localStorage.getItem('cachedMorningLocal')) || {
   set: "--",
   value: "--",
   twod: "--",
   time: "--"
 };
 
-let cachedEvening = {
+let cachedEvening = JSON.parse(localStorage.getItem('cachedMorningLocal')) ||{
   set: "--",
   value: "--",
   twod: "--",
   time: "--"
 };
+
 
 // ✅ Fetch and update main number
 async function fetchMainNumber() {
@@ -27,46 +33,6 @@ async function fetchMainNumber() {
     const data = await response.json();
 
     let newNumber = data.live.twod;
-
-    const liveTime = data.live.time;
-    const liveTimeDate = new Date(liveTime.replace(" ", "T")); // Convert to ISO format
-
-    const now = new Date(); // Define 'now' correctly
-
-    // Set limit times
-    const limitTime = new Date();
-    limitTime.setHours(12, 1, 0); // 12:01:00 PM
-
-    const evLimitTime = new Date();
-    evLimitTime.setHours(16, 30, 0); // 4:30:00 PM
-
-    // Morning caching condition
-    if (
-      now.getHours() === 12 &&
-      now.getMinutes() === 1 &&
-      now.getSeconds() === 1
-    ) {
-      cachedMorning.set = data.live.set;
-      cachedMorning.value = data.live.value;
-      cachedMorning.time = data.live.time;
-      cachedMorning.twod = data.live.twod;
-
-      localStorage.setItem("cachedMorningTwod", JSON.stringify(cachedMorning));
-    }
-
-    // Evening caching condition
-    if (
-      now.getHours() === 16 &&
-      now.getMinutes() === 30 &&
-      now.getSeconds() === 1
-    ) {
-      cachedEvening.set = data.live.set;
-      cachedEvening.value = data.live.value;
-      cachedEvening.time = data.live.time;
-      cachedEvening.twod = data.live.twod;
-
-      localStorage.setItem("cachedEveningTwod", JSON.stringify(cachedEvening));
-    }
 
     return newNumber;
   } catch (error) {
@@ -77,12 +43,11 @@ async function fetchMainNumber() {
 
 
 
-
 // Function to update the UI with the current system time (local time)
 function updateClock() {
   let updatedTimeContainer = document.querySelector(".updated-time-container");
 
-  if (isLiveActive && updatedTimeContainer) {
+  if (isLiveActive) {
     let now = new Date();
 
     // Format: YYYY-MM-DD HH:MM:SS (Local Time)
@@ -101,52 +66,39 @@ function updateClock() {
 }
 
 
-let fetchMainInterval = null;
-let fetchNewInterval = null;
-let clockInterval = null;
-
-
 
 async function isLiveTime() {
   try {
     const response = await fetch("https://api.thaistock2d.com/live");
     const data = await response.json();
 
-    // Check if holiday status is "2" (allowed for live updates)
-    if (data.holiday.status !== "2") {
-      console.log("⛔ Market is closed due to holiday status.");
-      isHoliday = true; 
-      isLiveActive = false;
-      return false;
+    if(data.holiday.status === "2"){
+
+      let now = new Date();
+    
+      let morningStart = new Date();
+      morningStart.setHours(8, 40, 0, 0);
+
+      let morningEnd = new Date();
+      morningEnd.setHours(12, 1, 0, 999);
+
+      
+      let eveningStart = new Date();
+      eveningStart.setHours(13, 40, 0, 0);
+
+      let eveningEnd = new Date();
+      eveningEnd.setHours(16, 30, 0, 999);  
+
+      // Check if current time is within live trading hours
+      isLiveActive =
+        (now >= morningStart && now <= morningEnd) ||
+        (now >= eveningStart && now < eveningEnd); 
     }
-
-    let now = new Date();
-
-    // Define morning and evening time ranges
-    let morningStart = new Date(now);
-    morningStart.setHours(8, 40, 0, 0);
-
-    let morningEnd = new Date(now);
-    morningEnd.setHours(12, 1, 2, 0);
-
-    let eveningStart = new Date(now);
-    eveningStart.setHours(13, 40, 0, 0);
-
-    let eveningEnd = new Date(now);
-    eveningEnd.setHours(16, 30, 2, 0);
-
-    // Check if current time is within live trading hours
-    isLiveActive =
-      (now >= morningStart && now <= morningEnd) ||
-      (now >= eveningStart && now <= eveningEnd);
-
-    console.log(isLiveActive ? "✅ Market is live." : "⛔ Market is closed.");
 
     return isLiveActive;
   } catch (error) {
     console.error("❌ Error fetching live data:", error);
-    isLiveActive = false;
-    return false;
+    return null;
   }
 }
 
@@ -155,7 +107,7 @@ async function startLiveFetch() {
   const live = await isLiveTime();
 
   if (live) {
-    renderMainNumber();
+   
 
     // Start only if not already running
     if (!fetchMainInterval) {
@@ -171,17 +123,23 @@ async function startLiveFetch() {
     }
 
     if (!clockInterval) {
+  
       updateClock(); // Update immediately
-      clockInterval = setInterval(updateClock, 1000);
+      clockInterval = setInterval(updateClock, 500);
       console.log("✅ updateClock started.");
     }
-  } else {
-    stopLiveFetch(); // Stop if outside live hours
-  }
+
+  } 
 }
 
 
-function stopLiveFetch() {
+async function stopLiveFetch() {
+
+  renderingNormalRESULTS();
+  let updatedTimeContainer = document.querySelector(".updated-time-container");
+  let finishedTime = await fetchFinishedTime(); // Get the latest stock_datetime
+  updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
+
   if (fetchMainInterval) {
     clearInterval(fetchMainInterval);
     fetchMainInterval = null;
@@ -201,21 +159,25 @@ function stopLiveFetch() {
   }
 }
 
-// Check every minute if we need to start or stop fetching
-setInterval(() => {
-  if (isLiveTime() && !fetchMainInterval) {
+
+
+async function checkLiveStatus() {
+  const live = await isLiveTime();
+
+  if (live && !fetchMainInterval) {
     startLiveFetch();
-  } else if (!isLiveTime() && fetchMainInterval) {
+  } else if (!live && fetchMainInterval) {
     stopLiveFetch();
   }
-}, 60000); // Check every 60 seconds
 
-// Run immediately on page load
-startLiveFetch();
+  setTimeout(checkLiveStatus, 1000); // Check every second recursively
+}
 
-
+checkLiveStatus(); // Start the live status check
 
 async function fetchNewNumber() {
+  localStorage.removeItem('cachedMorningLocal');
+  localStorage.removeItem('cachedEveningLocal');
   try {
     const response = await fetch(`https://api.thaistock2d.com/live?t=${Date.now()}`); // Prevent caching
     if (!response.ok) throw new Error("Network response was not ok");
@@ -234,31 +196,36 @@ async function fetchNewNumber() {
     // Convert latestStockDatetime to a Date object
     let latestStockDate = new Date(latestStockDatetime);
     let thresholdTime = new Date();
-    thresholdTime.setHours(12, 1, 2, 0); // Set to 12:10:00
+    thresholdTime.setHours(12, 1, 5, 0); // Set to 12:1:05 PM
 
-    // Check if live data is available
-    if (newDigit === "--") {
-      isLiveActive = false; // Stop animation
-      newDigit = latestStockDatetime ? data.result[data.result.length - 1].twod : "--"; // Use latest result
-    } else {
-      isLiveActive = true; // Live data is available again
-      
+
+    if(lastUpdatedTime <= new Date().setHours(12,1,5,0) && lastUpdatedTime >= new Date().setHours(12,0,59,0)){
+      cachedMorning.set = newSet;
+      cachedMorning.value = newValue;
+      cachedMorning.twod = newDigit;
+      localStorage.setItem('cachedMorningLocal',JSON.stringify(cachedMorning));
+    }
+
+    if(lastUpdatedTime <= new Date().setHours(16,30,5,0) && lastUpdatedTime >= new Date().setHours(16,29,99,0)){
+      cachedEvening.set = newSet;
+      cachedEvening.value = newValue;
+      cachedEvening.twod = newDigit;
+      localStorage.setItem('cachedEveningLocal',JSON.stringify(cachedEvening));
     }
 
     // Apply fade-in and fade-out effect based on time
     if (latestStockDate < thresholdTime) {
       updateWithFade(".js-morning-set-result", newSet);
       updateWithFade(".js-morning-value-result", newValue);
-      updateWithFade(".js-morning-result-digit", '--');
+      updateWithFade(".js-morning-result-digit", "--");
     } else {
-      updateWithFade(".js-evening-set-result", newSet);
-      updateWithFade(".js-evening-value-result", newValue);
-      updateWithFade(".js-evening-result-digit", '--');
+     updateWithFade(".js-evening-set-result", newSet);
+     updateWithFade(".js-evening-value-result", newValue);
+     updateWithFade(".js-evening-result-digit", "--");
     }
 
   } catch (error) {
     console.error("Error fetching data:", error);
-    isLiveActive = false; // Stop updating clock
     showLoading();
   }
 }
@@ -282,11 +249,8 @@ function showLoading() {
   document.querySelector(".js-morning-result-digit").textContent = "--";
 }
 
-
-
 // Initial call to display loading on page load
 showLoading();
-
 
 
 async function fetchFinishedTime() {
@@ -310,43 +274,12 @@ async function fetchFinishedTime() {
     // Find the latest stock_datetime
     validResults.sort((a, b) => new Date(b.stock_datetime) - new Date(a.stock_datetime));
 
-    console.log("✅ Latest finished stock time:", validResults[0].stock_datetime);
+   
     return validResults[0].stock_datetime;
 
   } catch (error) {
     console.error("❌ Error fetching data:", error);
     return "";
-  }
-}
-
-
-updateTime();
-// ✅ Fetch finished stock time
-async function updateTime() {
-  let updatedTimeContainer = document.querySelector(".updated-time-container");
-
-  if (!updatedTimeContainer) return;
-
-  let finishedTime = await fetchFinishedTime(); // Get the latest stock_datetime
-
-
-  if(isLiveActive === false ){
-    updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
-  } else if (isLiveActive === false && !isHoliday){
-    updatedTimeContainer.innerHTML = `<img src="icons/loading.svg" /> waiting for live ... `;
-  }
-  
-  else {
-    updatedTimeContainer.innerHTML = `<img src="icons/loading.svg" /> loading ...`;
-  }
-  
-}
-
-// ✅ Function to set update time with green tick (Only when update is valid)
-function setUpdatedTime(time) {
-  let updatedTimeContainer = document.querySelector(".updated-time-container");
-  if (updatedTimeContainer) {
-    updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${time}`;
   }
 }
 
@@ -358,18 +291,8 @@ async function fetchFinishedResults() {
     const data = await response.json();
 
     const lastData = Array.isArray(data) && data.length > 0 ? data[0] : {};
-  
-    
-    if(lastData.date !== new Date().toISOString().split('T')[0]){
-      if(!isHoliday && isLiveActive){
-        return {}
-      } 
-      else {
-        return  lastData || {};
-      }
-    } else {
-      return  lastData || {};
-    }
+
+    return lastData || {};
   } 
   catch (error) {
     console.error("Error fetching data:", error);
@@ -379,70 +302,113 @@ async function fetchFinishedResults() {
 
 
 
-async function getFinishedResults() {
+async function renderingShowingLastResults() {
+  try {
+    let finishedResults = await fetchFinishedResults();
+    let finishedTime = await fetchFinishedTime(); // Get the latest stock_datetime
+    let updatedTimeContainer = document.querySelector(".updated-time-container");
+    if (!finishedResults || !Array.isArray(finishedResults.child)) {
+      console.log("No valid data available.");
+      return;
+    }
+  
 
-  let finishedResults = await fetchFinishedResults();
-  if (finishedResults.child && Array.isArray(finishedResults.child)) {
+    let now = new Date();
+
+    let morningStart = new Date();
+    morningStart.setHours(8, 40, 0, 0);
+
+    let morningEnd = new Date();
+    morningEnd.setHours(12, 1, 0, 999);
+
+    let eveningStart = new Date();
+    eveningStart.setHours(13, 40, 0, 0);
+
+    let eveningEnd = new Date();
+    eveningEnd.setHours(16, 30, 0, 999);
+
     finishedResults.child.forEach((item) => {
-
-     
-      if(item.time === '16:30:00'){
-        if(item.twod==="--"){
-          renderEveningInPage(cachedEvening);
-        } else if (item.twod !== "--"){
+      if (now >= morningStart && now <= morningEnd && isLiveActive) {
+        if (item.time === '16:30:00') {
+          console.log("Rendering Evening Result during Morning Live Active");
           renderEveningInPage(item);
-          if (localStorage.getItem("cachedEveningTwod")) {
-            localStorage.removeItem("cachedEveningTwod");
-          } 
         }
-      } 
-      //Morning Section
-      else if (item.time === '12:01:00'){
-        if(item.twod==="--"){
-          renderMorningInPage(cachedMorning);
-        } else if (item.twod !== "--"){
-          renderMorningInPage(item);
-          if (localStorage.getItem("cachedMorningTwod")) {
-            localStorage.removeItem("cachedMorningTwod");
-          } 
-        }
-
-        console.log(item);
       }
-      
+
+      if (now >= eveningStart && now <= eveningEnd && isLiveActive) {
+        if (item.time === '12:01:00') {
+          console.log("Rendering Morning Result during Evening Live Active");
+          renderMorningInPage(item);
+        }
+      }
+
+      if (!isLiveActive) {
+        if (item.time === '12:01:00') {
+          renderMorningInPage(item);
+        }
+        if (item.time === '16:30:00') {
+          renderEveningInPage(item);
+        }
+      }
+      if(!isLiveActive){
+        if (!isLiveActive && now > morningEnd && now < eveningStart) {
+            updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
+        } else if (!isLiveActive){
+          updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
+        } 
+      }
 
     });
-  } else {
-    console.log("No data available. : in Live");
+  } catch (error) {
+    console.error("Error fetching finished results:", error);
   }
 }
 
+async function renderingNormalRESULTS(){
+    let finishedResults = await fetchFinishedResults();
+    finishedResults.child.forEach((item) => {
 
-// ✅ Ensure only valid updates trigger green tick
-async function renderEveningInPage(itemParam) {
-  document.querySelector('.js-evening-set-result').textContent = itemParam.set;
-  document.querySelector('.js-evening-value-result').textContent = itemParam.value;
-  document.querySelector('.js-evening-result-digit').textContent = itemParam.twod;
-  if(!isLiveActive){
+    if (!isLiveActive) {
+      if (item.time === '12:01:00') {
+        if(item.twod === "--"){
+          renderMorningInPage(cachedMorning);
+        } else {
+          renderMorningInPage(item);
+        }
+      }
+      if (item.time === '16:30:00') {
+        if(item.twod === "--"){
+          renderEveningInPage(cachedEvening);
+        } else {
+          renderEveningInPage(item);
+        }
+      }
+    }
+  })
+}
+
+// ✅ Render Evening Result
+function renderEveningInPage(itemParam) {
+ document.querySelector('.js-evening-set-result').textContent = itemParam.set;
+ document.querySelector('.js-evening-value-result').textContent = itemParam.value;
+ document.querySelector('.js-evening-result-digit').textContent = itemParam.twod;
+  if (!isLiveActive) {
     document.querySelector('.main-number').innerHTML = itemParam.twod;
   }
 }
 
-
-
-// ✅ Ensure only valid updates trigger green tick
-async function renderMorningInPage(itemParam) {
+// ✅ Render Morning Result
+function renderMorningInPage(itemParam) {
   document.querySelector('.js-morning-set-result').textContent = itemParam.set;
   document.querySelector('.js-morning-value-result').textContent = itemParam.value;
   document.querySelector('.js-morning-result-digit').textContent = itemParam.twod;
-  if(!isLiveActive){
+  if (!isLiveActive) {
     document.querySelector('.main-number').innerHTML = itemParam.twod;
   }
 }
 
-getFinishedResults();
 
-
+renderingShowingLastResults();
 
 async function renderMainNumber() {
   let currentNumber = ""; // Start with "00"
@@ -467,6 +433,7 @@ async function renderMainNumber() {
     currentNumber = newNumber; // Update stored number
   }, 1000); // Change every 2 seconds
 }
+
 
 
 
