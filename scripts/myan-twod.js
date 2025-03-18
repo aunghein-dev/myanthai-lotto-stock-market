@@ -75,6 +75,7 @@ async function fetchMainNumber() {
   }
 }
 
+
 // Function to update the UI with the current system time (local time)
 function updateClock() {
   let updatedTimeContainer = document.querySelector(".updated-time-container");
@@ -93,17 +94,7 @@ function updateClock() {
       hour12: false, // Ensure 24-hour format
     }).replace(",", ""); // Remove comma in some locales
 
-    // If the SVG isn't already there, add it once
-    if (!updatedTimeContainer.querySelector("img")) {
-      updatedTimeContainer.innerHTML = `
-        <img src="icons/live.svg?v=${Date.now()}" alt="Live Icon" />
-        Updating at ${formattedTime}
-      `;
-    } else {
-      // If SVG is already there, just update the time
-      updatedTimeContainer.querySelector("img").src = `icons/live.svg?v=${Date.now()}`;
-      updatedTimeContainer.querySelector(".time").textContent = `Updating at ${formattedTime}`;
-    }
+    updatedTimeContainer.innerHTML = `<img src="icons/live.svg" />  Updating at ${formattedTime}`;
   }
 }
 
