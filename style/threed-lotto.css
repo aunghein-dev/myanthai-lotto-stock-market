@@ -1,0 +1,66 @@
+.container-warapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(160px, auto));
+  row-gap: 16px;
+  column-gap: 10px;
+  margin-left: clamp(20px, 5vw, 100px); /* Reduced values */
+  margin-right: clamp(20px, 5vw, 100px); /* Reduced values */
+  margin-bottom: 30px;
+}
+
+
+.year-title{
+  color: white;
+  font-size: 30px;
+  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  width: fit-content; /* Adjust width based on content */
+  margin: 0 auto; /* Centers the element */
+  margin-bottom: 14px;
+}
+
+.lotto-container{
+  height: 100px;
+  background-color: rgba(231, 231, 231, 0.4);
+  border-radius: 12px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+  padding-left: 12px;
+  padding-right: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.myan-3d,.thai-lotto,.lotto-draw-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.lotto-month,
+.lotto-day {
+  color: rgb(224, 224, 224);
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center; /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+  text-align: center;
+}
+
+.lotto-inner-header{
+  font-size: 12px;
+  font-weight: 500;
+  color: black;
+  margin-bottom: 6px;
+}
+
+.myan-3d-num,.thai-lotto-num{
+  color: rgb(60, 30, 112);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.thai-lotto-num0,.myan-3d-num0 {
+  color: rgb(255, 166, 0);
+}

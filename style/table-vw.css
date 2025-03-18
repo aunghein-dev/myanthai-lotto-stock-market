@@ -1,0 +1,211 @@
+.each-month-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: -10px;
+}
+.header-of-table-month{
+  text-align: center;
+  padding: 16px 20px;
+  background-color: rgb(231, 231, 231);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 230px;
+  border-radius: 12px;
+  /* Center horizontally */
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: -10px;
+  box-shadow: 1px -1px 8px rgba(232, 203, 255, 0.4);
+}
+
+
+.styled-table {
+  margin-top: 30px;
+  margin-bottom: 110px;
+  color: white;
+  border-collapse: separate; /* ✅ Allows border-radius to work */
+  border-spacing: 0;
+  font-size: 0.8em;
+  width: 100%;
+  border: 1px solid white;
+  border-radius: 10px;
+  overflow: hidden; /* ✅ Prevents content overflow */
+  
+}
+
+
+
+.ideal-row {
+  border-bottom: 1px solid white; /* Default closing border for each group */
+}
+
+.ideal-row:last-child {
+  border-bottom: none; /* Remove border from last row */
+}
+
+
+/* Table Header */
+.styled-table thead tr {
+  background-color: rgba(231, 231, 231, 0.4);
+  color: #ffffff;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Table Cells */
+.styled-table th,
+.styled-table td {
+  padding: 8px 10px;
+  text-align: center;
+  vertical-align: middle;
+  transition: scale 0.2s;
+}
+
+.main-result-twod-table{
+  color: rgb(255, 166, 0);
+  font-weight: 700;
+}
+
+/* Default styles for smaller screens */
+.td-header-of-date,
+.td-header-of-time,
+.td-header-of-twod {
+  transition: width 0.3s ease-in-out; /* Smooth width change */
+}
+
+.td-header-of-date {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.td-header-of-time {
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.td-header-of-twod {
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Tablet (600px and up) */
+@media (min-width: 600px) {
+  .styled-table {
+    font-size: 0.9em;  /* Slightly larger font */
+  }
+  .td-header-of-date {
+    width: 58px;
+  }
+  .td-header-of-time {
+    width: 90px;
+  }
+  .td-header-of-twod {
+    width: 46px;
+  }
+  .styled-table thead tr {
+    font-size: 18px;
+  }
+}
+
+/* Laptops (1024px and up) */
+@media (min-width: 1024px) {
+  .styled-table {
+    font-size: 1em;  /* Larger font for desktops */
+  }
+  .td-header-of-date {
+    width: 68px;
+  }
+  .td-header-of-time {
+    width: 90px;
+  }
+  .td-header-of-twod {
+    width: 46px;
+  }
+  .styled-table thead tr {
+    font-size: 20px;
+  }
+}
+
+
+/* Table Rows */
+.styled-table tbody tr {
+  border-spacing: 0 2px;
+}
+
+/* Merged Header Cells */
+.styled-table th[colspan] {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.active-b {
+  background: #7a4bb3;
+  border-radius: 1px;
+  padding: 2px 4px;
+}
+
+.header-number,.inner-num {
+  position: relative; /* Ensures the tooltip is positioned relative to this */
+}
+
+
+
+/* Tooltip Styling */
+.tooltip,.tooltip-i{
+  position: absolute;
+  border-radius: 20px;
+  color: white;
+  background-color: rgb(95, 0, 146);
+  padding: 1px 4px;
+  font-size: 14px;
+  transition: opacity 0.2s ease-in-out;
+  top: -5px;  
+  left: 50%;
+  transform: translateX(-18%);
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.tooltip-i{
+  transform: translateX(-0%);
+  top: -2px;  
+  font-size: 11px;
+  padding: 1px 4px;
+  background-color: rgb(31, 125, 58);
+}
+
+
+/* Apply border to all table cells */
+.styled-table th,
+.styled-table td {
+  border: 0.2px dotted rgb(124, 124, 124);
+  padding: 8px; /* Add some spacing for better visibility */
+}
+
+/* Apply bottom border for all cells in the second row */
+.evening-row-twod td,
+.evening-row-twod th {
+  border-bottom: 0.2px solid rgb(124, 124, 124); /* Thicker bottom border for effect */
+  padding-bottom: 5px; /* Adds space between content and border */
+}
+
+/* Ensure rowspan cell gets a bottom border */
+td[rowspan] {
+  border-bottom: 1px solid rgb(124, 124, 124);
+}
+
+/* Alternative for modern browsers */
+tr:has(td[rowspan]) td[rowspan] {
+  border-bottom: 1px solid rgb(124, 124, 124);
+}

@@ -1,0 +1,28 @@
+.threed-bd{
+  margin-top: -20px;
+}
+
+.navi-bar-3D {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: rgb(47, 47, 47);
+  display: flex;
+  justify-content: center; /* Centers items horizontally */
+  align-items: center;
+  z-index: 300;
+}
+
+.home-link {
+  position: absolute;
+  left: 10px; /* Keeps the back button on the left */
+}
+
+.header-3D {
+  color: white;
+  font-size: 18px;
+  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}

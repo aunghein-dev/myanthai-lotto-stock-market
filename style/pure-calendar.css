@@ -1,0 +1,117 @@
+.calendar-viewing-angle{
+  padding-left: 1px;
+  padding-right: 1px;
+  margin-top: -10px;
+}
+
+
+
+/*#table*/
+.pure-calendar-tb {
+  margin-top: 30px;
+  margin-bottom: 100px;
+  color: white;
+  border-collapse: separate; 
+  font-size: 1em;
+  border-spacing: 0 4px;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden; /* ✅ Prevents content overflow */
+}
+
+/* Apply border only to the header row */
+.pure-calendar-tb thead {
+  border: 1px solid rgb(255, 255, 255); /* ✅ Border only for the header */
+  height: 70px;
+}
+
+
+/* Header row style */
+.pure-calendar-tb thead tr {
+  background-color: rgba(231, 231, 231, 0.4); /* ✅ Only affects header */
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Header cells (no spacing) */
+.pure-calendar-tb thead th {
+  border: none; /* ✅ No border between header columns */
+  padding: 8px 10px;
+}
+
+
+.pure-calendar-tb th,.pure-calendar-tb td {
+  padding: 8px 10px;
+  text-align: center;
+  vertical-align: middle;
+  transition: scale 0.2s;
+}
+
+.pure-calendar-tb .day-cell {
+  color: white;
+  background: transparent;
+  border: 1px solid rgba(160, 160, 160, 0.4);
+}
+
+.pure-calendar-tb th.tb-mon {
+  border-top-left-radius: 10px;
+  border-left: 1px solid white;
+
+}
+
+.pure-calendar-tb th.tb-tue,
+.pure-calendar-tb th.tb-wed,
+.pure-calendar-tb th.tb-thu,
+.pure-calendar-tb th.tb-mon,
+.pure-calendar-tb th.tb-fri  {
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.pure-calendar-tb th.tb-fri {
+  border-top-right-radius: 10px;
+  border-right: 1px solid white;
+}
+
+
+.pure-calendar-tb .day-cell .day-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 70px;
+  min-width: 50px;
+}
+
+.pure-calendar-tb .day-cell .day-of-month{
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: 38px;
+}
+.pure-calendar-tb .day-cell .day-result-container{
+  font-size: 0.9em;
+  row-gap: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  color: rgb(255, 166, 0);
+}
+
+.month-display-container{
+  text-align: center;
+  padding: 16px 20px;
+  background-color: rgb(231, 231, 231);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 230px;
+  border-radius: 12px;
+  /* Center horizontally */
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: -14px;
+  box-shadow: 1px -1px 8px rgba(232, 203, 255, 0.4);
+}

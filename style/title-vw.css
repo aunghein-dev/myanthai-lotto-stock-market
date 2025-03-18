@@ -1,0 +1,25 @@
+.title-vw-date-header {
+  text-align: center;
+  padding: 16px 20px;
+  background-color: rgb(231, 231, 231);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  border-radius: 12px;
+  /* Center horizontally */
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: -20px;
+  box-shadow: 1px -1px 8px rgba(232, 203, 255, 0.4);
+}
+
+
+.title-view-panel{
+  margin-top: -10px;
+}
+
+.modern-internet-container{
+  margin-bottom: 100px;
+}

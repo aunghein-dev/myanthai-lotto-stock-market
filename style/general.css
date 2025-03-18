@@ -1,0 +1,86 @@
+body{
+  font-family: Roboto, Arial;
+  margin: 0;
+  position: relative;
+  padding-top: 100px;
+  background: url('web-background.jpg');
+  padding-bottom: 50px;
+}
+
+
+p{
+  margin: 0;
+}
+
+/*
+.main-number {
+  color: white;
+  font-weight: 700;
+  font-size: 120px;
+  display: flex;
+  justify-content: center;
+  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+}
+*/
+
+.number-live-area{
+  height: 200px;
+}
+
+.main-number {
+  color: white;
+  font-weight: 700;
+  font-size: 120px;
+  display: flex;
+  justify-content: center;
+  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.4);
+  gap: 5px; /* Space between digits */
+  margin-top: 20px;
+}
+
+.digit {
+  display: inline-block;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.slide-in {
+  z-index: 100;
+  transform: translateY(100%);
+  opacity: 0;
+  animation: slideInDigit 0.5s ease-in-out forwards;
+}
+
+@keyframes slideInDigit {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.updated-time-container{
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.updated-time-container img{
+  margin-right: 4px;
+}
+

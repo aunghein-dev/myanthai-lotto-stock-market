@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burma-Thai 2D 3D</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style/general.css" />
+    <link rel="stylesheet" href="style/navi-bar.css" />
+    <link rel="stylesheet" href="style/set-value-box.css" />
+    <link rel="stylesheet" href="style/slider-info.css" />
+  </head>
+  <body>
+    <nav class="navi-bar">
+      <a class="home-link" href="twod.html"
+        >Mini<img src="icons/app-logo.svg" />
+      </a>
+      <div class="navi-right-section">
+        <!--<a href="threed.html"><img src="icons/chat.svg" /></a>-->
+        <a href="threed.html"><img src="icons/3D.svg" /></a>
+        <a href="twod-hist.html"><img src="icons/history.svg" /></a>
+      </div>
+    </nav>
+
+    <!-- Scrolling Text -->
+    <div class="scrolling-text-wrapper">
+      <div class="scrolling-text" id="scrolling-text">Welcome to Mini</div>
+    </div>
+
+    <div class="number-live-area">
+      <div class="main-number">--</div>
+      <div class="updated-time-container">
+        <img src="icons/loading.svg" /> loading ...
+      </div>
+    </div>
+
+    <div class="morning-evening-container">
+      <div class="morning-box">
+        <p class="morning-result-time">12:00 PM</p>
+
+        <div class="morning-setvalue-section">
+          <div class="morning-set">
+            <p class="setvalue-header">SET</p>
+            <p class="morning-set-result js-morning-set-result">--</p>
+          </div>
+          <div class="morning-value">
+            <p class="setvalue-header">Value</p>
+            <p class="morning-value-result js-morning-value-result">--</p>
+          </div>
+          <div class="morning-result">
+            <p class="setvalue-header">2D</p>
+            <p class="morning-result-digit js-morning-result-digit">--</p>
+          </div>
+        </div>
+      </div>
+      <div class="evening-box">
+        <p class="evening-result-time">4:30 PM</p>
+
+        <div class="evening-setvalue-section">
+          <div class="evening-set">
+            <p class="setvalue-header">SET</p>
+            <p class="evening-set-result js-evening-set-result">--</p>
+          </div>
+          <div class="evening-value">
+            <p class="setvalue-header">Value</p>
+            <p class="evening-value-result js-evening-value-result">--</p>
+          </div>
+          <div class="evening-result">
+            <p class="setvalue-header">2D</p>
+            <p class="evening-result-digit js-evening-result-digit">--</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modern-internet-container">
+      <div class="nine-thirty-o-clock">
+        <div class="mordern-internet-inner-box modern-internet-time">
+          9:30 AM
+        </div>
+        <div class="mordern-internet-inner-box">
+          <div class="modern-internet-mini-header">Mordern</div>
+          <div class="nine-thirty-mordern-result-main-page">--</div>
+        </div>
+        <div class="mordern-internet-inner-box">
+          <div class="modern-internet-mini-header">Internet</div>
+          <div class="nine-thirty-internet-result-main-page">--</div>
+        </div>
+      </div>
+
+      <div class="two-o-clock">
+        <div class="mordern-internet-inner-box modern-internet-time">
+          2:00 PM
+        </div>
+        <div class="mordern-internet-inner-box">
+          <div class="modern-internet-mini-header">Mordern</div>
+          <div class="two-o-clock-mordern-result-main-page">--</div>
+        </div>
+        <div class="mordern-internet-inner-box">
+          <div class="modern-internet-mini-header">Internet</div>
+          <div class="two-o-clock-internet-result-main-page">--</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/myan-twod.js"></script>
+    <script src="scripts/modern-internet.js"></script>
+    <script src="scripts/main-page.js"></script>
+  </body>
+</html>

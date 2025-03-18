@@ -1,0 +1,53 @@
+{
+  "server_time": "2025-03-13 00:08:08",
+  "live": {
+    "set": "--",
+    "value": "--",
+    "time": "--",
+    "twod": "--",
+    "date": "2025-03-13"
+  },
+  "result": [
+    {
+      "set": "1171.25",
+      "value": "16411.73",
+      "open_time": "11:00:00",
+      "twod": "51",
+      "stock_date": "2025-03-12",
+      "stock_datetime": "2025-03-12 11:00:02",
+      "history_id": "1918039"
+    },
+    {
+      "set": "1170.6",
+      "value": "20693.96",
+      "open_time": "12:01:00",
+      "twod": "03",
+      "stock_date": "2025-03-12",
+      "stock_datetime": "2025-03-12 12:01:01",
+      "history_id": "1918444"
+    },
+    {
+      "set": "1159.54",
+      "value": "35206.17",
+      "open_time": "15:00:00",
+      "twod": "46",
+      "stock_date": "2025-03-12",
+      "stock_datetime": "2025-03-12 15:00:01",
+      "history_id": "1919347"
+    },
+    {
+      "set": "1160.06",
+      "value": "46281.66",
+      "open_time": "16:30:00",
+      "twod": "61",
+      "stock_date": "2025-03-12",
+      "stock_datetime": "2025-03-12 16:30:04",
+      "history_id": "1919776"
+    }
+  ],
+  "holiday": {
+    "status": "2",
+    "date": "2025-03-12",
+    "name": "NULL"
+  }
+}

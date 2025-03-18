@@ -1,0 +1,67 @@
+.navi-bar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: rgb(47, 47, 47);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 1000;
+}
+
+.navi-left-section{
+  color: white;
+  font-size: 20px;
+  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.navi-left-section:hover{
+  opacity: 0.8;
+}
+
+.navi-right-section{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3px;
+}
+.navi-right-section img{
+  padding: 9.999px 20px;
+  height: 30px;
+  transition: scale 0.2, opacity 0.2;
+  cursor: pointer;
+}
+
+.home-link img{
+  height: 40px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.navi-right-section img:hover, .home-link:hover{
+  scale: 1.06;
+  background-color: rgb(75, 75, 75);
+  border-radius: 5px;
+}
+.navi-right-section img:active, .home-link a:active{
+  opacity: 0.8;
+}
+
+.home-link{
+  padding: 5px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+  transition: scale 0.2, opacity 0.2;
+}
