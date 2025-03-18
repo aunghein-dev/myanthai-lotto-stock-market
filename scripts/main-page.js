@@ -1,6 +1,6 @@
 const textArray = [
   "မင်္ဂလာရှိသောနေ့ရက်လေး ဖြစ်ကြပါစေ...🌻",
-  "အားလုံး အဆင်ပြေကြပါစေ...💜",
+  "တနေ့တာ ကိစ္စအဝဝ အဆင်ပြေကြပါစေ...💐",
   "Thank you for visiting our website. We sincerely appreciate your support and look forward to serving you."
   
 ];
