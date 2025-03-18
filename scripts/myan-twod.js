@@ -74,7 +74,7 @@ async function isLiveTime() {
     morningEnd.setHours(12, 1, 5, 0);
 
     let eveningStart = new Date(now);
-    eveningStart.setHours(12, 0, 0, 0);
+    eveningStart.setHours(14, 0, 0, 0);
 
     let eveningEnd = new Date(now);
     eveningEnd.setHours(16, 30, 5, 0);
@@ -178,7 +178,7 @@ async function fetchNewNumber() {
     // Convert latestStockDatetime to a Date object
     let latestStockDate = new Date(latestStockDatetime);
     let thresholdTime = new Date();
-    thresholdTime.setHours(12, 10, 0, 0); // Set to 12:10:00
+    thresholdTime.setHours(12, 1, 6, 0); // Set to 12:10:00
 
     // Check if live data is available
     if (newDigit === "--") {
