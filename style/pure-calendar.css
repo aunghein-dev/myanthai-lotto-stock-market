@@ -4,11 +4,9 @@
   margin-top: -10px;
 }
 
-
-
 /*#table*/
 .pure-calendar-tb {
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 100px;
   color: white;
   border-collapse: separate; 
@@ -51,6 +49,7 @@
   color: white;
   background: transparent;
   border: 1px solid rgba(160, 160, 160, 0.4);
+  border-radius: 20px;
 }
 
 .pure-calendar-tb th.tb-mon {
@@ -76,7 +75,7 @@
 
 .pure-calendar-tb .day-cell .day-container{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   min-height: 70px;
@@ -84,17 +83,15 @@
 }
 
 .pure-calendar-tb .day-cell .day-of-month{
-  font-size: 1.2em;
+  font-size: 0.9em;
   font-weight: 700;
-  margin-bottom: 38px;
+  color: rgba(213, 213, 213,0.4);
 }
 .pure-calendar-tb .day-cell .day-result-container{
-  font-size: 0.9em;
-  row-gap: 6px;
+  font-size: 1.3em;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  row-gap: 4px;
   font-weight: 700;
   color: rgb(255, 166, 0);
 }
@@ -112,6 +109,9 @@
   margin: 0 auto;
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: -14px;
   box-shadow: 1px -1px 8px rgba(232, 203, 255, 0.4);
+}
+
+table td.day-cell.today-date-box {
+  border: 2px solid rgb(255, 255, 255);
 }
