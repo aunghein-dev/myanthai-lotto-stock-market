@@ -76,6 +76,8 @@ async function fetchMainNumber() {
 }
 
 
+
+
 // Function to update the UI with the current system time (local time)
 function updateClock() {
   let updatedTimeContainer = document.querySelector(".updated-time-container");
@@ -232,7 +234,7 @@ async function fetchNewNumber() {
     // Convert latestStockDatetime to a Date object
     let latestStockDate = new Date(latestStockDatetime);
     let thresholdTime = new Date();
-    thresholdTime.setHours(12, 10, 0, 0); // Set to 12:10:00
+    thresholdTime.setHours(12, 1, 2, 0); // Set to 12:10:00
 
     // Check if live data is available
     if (newDigit === "--") {
