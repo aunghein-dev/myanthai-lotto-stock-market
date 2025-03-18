@@ -9,9 +9,9 @@ async function fetchDataForLastTwoMonths() {
   let allDates = [];
   let today = new Date();
   
-  // Calculate the start date (6 months ago)
+  // Calculate the start date (2 months ago)
   let startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 4);
+  startDate.setMonth(startDate.getMonth() - 2);
   
   let currentDate = new Date(startDate);
   let todayStr = today.toISOString().split('T')[0];
