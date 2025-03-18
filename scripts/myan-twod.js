@@ -6,6 +6,20 @@ let lastUpdatedTime = null; // Store the last known API update time
 let isHoliday = false;
 
 
+let cachedMorning = {
+  set: "--",
+  value: "--",
+  twod: "--",
+  time: "--"
+};
+
+let cachedEvening = {
+  set: "--",
+  value: "--",
+  twod: "--",
+  time: "--"
+};
+
 // ✅ Fetch and update main number
 async function fetchMainNumber() {
   try {
@@ -14,12 +28,54 @@ async function fetchMainNumber() {
 
     let newNumber = data.live.twod;
 
+    const liveTime = data.live.time;
+    const liveTimeDate = new Date(liveTime.replace(" ", "T")); // Convert to ISO format
+
+    const now = new Date(); // Define 'now' correctly
+
+    // Set limit times
+    const limitTime = new Date();
+    limitTime.setHours(12, 1, 0); // 12:01:00 PM
+
+    const evLimitTime = new Date();
+    evLimitTime.setHours(16, 30, 0); // 4:30:00 PM
+
+    // Morning caching condition
+    if (
+      now.getHours() === 12 &&
+      now.getMinutes() === 1 &&
+      now.getSeconds() === 1
+    ) {
+      cachedMorning.set = data.live.set;
+      cachedMorning.value = data.live.value;
+      cachedMorning.time = data.live.time;
+      cachedMorning.twod = data.live.twod;
+
+      localStorage.setItem("cachedMorningTwod", JSON.stringify(cachedMorning));
+    }
+
+    // Evening caching condition
+    if (
+      now.getHours() === 16 &&
+      now.getMinutes() === 30 &&
+      now.getSeconds() === 1
+    ) {
+      cachedEvening.set = data.live.set;
+      cachedEvening.value = data.live.value;
+      cachedEvening.time = data.live.time;
+      cachedEvening.twod = data.live.twod;
+
+      localStorage.setItem("cachedEveningTwod", JSON.stringify(cachedEvening));
+    }
+
     return newNumber;
   } catch (error) {
     console.error("Error fetching data:", error);
     return "";
   }
 }
+
+
 
 
 // Function to update the UI with the current system time (local time)
@@ -68,16 +124,16 @@ async function isLiveTime() {
 
     // Define morning and evening time ranges
     let morningStart = new Date(now);
-    morningStart.setHours(9, 0, 0, 0);
+    morningStart.setHours(8, 40, 0, 0);
 
     let morningEnd = new Date(now);
-    morningEnd.setHours(12, 1, 5, 0);
+    morningEnd.setHours(12, 1, 2, 0);
 
     let eveningStart = new Date(now);
-    eveningStart.setHours(14, 0, 0, 0);
+    eveningStart.setHours(13, 40, 0, 0);
 
     let eveningEnd = new Date(now);
-    eveningEnd.setHours(16, 30, 5, 0);
+    eveningEnd.setHours(16, 30, 2, 0);
 
     // Check if current time is within live trading hours
     isLiveActive =
@@ -178,7 +234,7 @@ async function fetchNewNumber() {
     // Convert latestStockDatetime to a Date object
     let latestStockDate = new Date(latestStockDatetime);
     let thresholdTime = new Date();
-    thresholdTime.setHours(12, 1, 6, 0); // Set to 12:10:00
+    thresholdTime.setHours(12, 10, 0, 0); // Set to 12:10:00
 
     // Check if live data is available
     if (newDigit === "--") {
@@ -302,8 +358,7 @@ async function fetchFinishedResults() {
     const data = await response.json();
 
     const lastData = Array.isArray(data) && data.length > 0 ? data[0] : {};
-    
-
+  
     
     if(lastData.date !== new Date().toISOString().split('T')[0]){
       if(!isHoliday && isLiveActive){
@@ -312,7 +367,6 @@ async function fetchFinishedResults() {
       else {
         return  lastData || {};
       }
-      
     } else {
       return  lastData || {};
     }
@@ -330,11 +384,30 @@ async function getFinishedResults() {
   let finishedResults = await fetchFinishedResults();
   if (finishedResults.child && Array.isArray(finishedResults.child)) {
     finishedResults.child.forEach((item) => {
+
      
       if(item.time === '16:30:00'){
-        renderEveningInPage(item);
-      } else if (item.time === '12:01:00'){
-        renderMorningInPage(item);
+        if(item.twod==="--"){
+          renderEveningInPage(cachedEvening);
+        } else if (item.twod !== "--"){
+          renderEveningInPage(item);
+          if (localStorage.getItem("cachedEveningTwod")) {
+            localStorage.removeItem("cachedEveningTwod");
+          } 
+        }
+      } 
+      //Morning Section
+      else if (item.time === '12:01:00'){
+        if(item.twod==="--"){
+          renderMorningInPage(cachedMorning);
+        } else if (item.twod !== "--"){
+          renderMorningInPage(item);
+          if (localStorage.getItem("cachedMorningTwod")) {
+            localStorage.removeItem("cachedMorningTwod");
+          } 
+        }
+
+        console.log(item);
       }
       
 
