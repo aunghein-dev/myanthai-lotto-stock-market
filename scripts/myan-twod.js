@@ -40,7 +40,7 @@ function updateClock() {
       hour12: false, // Ensure 24-hour format
     }).replace(",", ""); // Remove comma in some locales
 
-    updatedTimeContainer.innerHTML = `<img src="icons/loading.svg" />  Updating at ${formattedTime}`;
+    updatedTimeContainer.innerHTML = `<img src="icons/live.svg" />  Updating at ${formattedTime}`;
   }
 }
 
