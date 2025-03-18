@@ -68,13 +68,13 @@ async function isLiveTime() {
 
     // Define morning and evening time ranges
     let morningStart = new Date(now);
-    morningStart.setHours(9, 45, 0, 0);
+    morningStart.setHours(9, 0, 0, 0);
 
     let morningEnd = new Date(now);
     morningEnd.setHours(12, 1, 5, 0);
 
     let eveningStart = new Date(now);
-    eveningStart.setHours(14, 15, 0, 0);
+    eveningStart.setHours(12, 0, 0, 0);
 
     let eveningEnd = new Date(now);
     eveningEnd.setHours(16, 30, 5, 0);
@@ -274,9 +274,13 @@ async function updateTime() {
   let finishedTime = await fetchFinishedTime(); // Get the latest stock_datetime
 
 
-  if(isLiveActive === false){
+  if(isLiveActive === false ){
     updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
-  } else {
+  } else if (isLiveActive === false && !isHoliday){
+    updatedTimeContainer.innerHTML = `<img src="icons/loading.svg" /> waiting for live ... `;
+  }
+  
+  else {
     updatedTimeContainer.innerHTML = `<img src="icons/loading.svg" /> loading ...`;
   }
   
@@ -298,11 +302,8 @@ async function fetchFinishedResults() {
     const data = await response.json();
 
     const lastData = Array.isArray(data) && data.length > 0 ? data[0] : {};
+    
 
-    console.log(isLiveActive);
-    console.log(isLiveTime());
-    
-    
     
     if(lastData.date !== new Date().toISOString().split('T')[0]){
       if(!isHoliday && isLiveActive){
