@@ -76,8 +76,6 @@ async function fetchMainNumber() {
 }
 
 
-
-
 // Function to update the UI with the current system time (local time)
 function updateClock() {
   let updatedTimeContainer = document.querySelector(".updated-time-container");
@@ -96,9 +94,16 @@ function updateClock() {
       hour12: false, // Ensure 24-hour format
     }).replace(",", ""); // Remove comma in some locales
 
-    updatedTimeContainer.innerHTML = `<img src="icons/live.svg" />  Updating at ${formattedTime}`;
+    // Force reload SVG to restart animation
+    updatedTimeContainer.innerHTML = `
+      <img src="icons/live.svg?v=${Date.now()}" alt="Live Icon" />
+      Updating at ${formattedTime}
+    `;
   }
 }
+
+
+
 
 
 let fetchMainInterval = null;
