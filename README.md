@@ -8,7 +8,7 @@ Welcome to the **Burma Thai Stock Lottery Real-Time Live** project! This platfor
 
 ---
 
-![IMG_4165](https://github.com/user-attachments/assets/833140b6-0acc-43f2-8e54-7c0c8b29e815)
+<img src="https://github.com/user-attachments/assets/833140b6-0acc-43f2-8e54-7c0c8b29e815" alt="IMG_4165" width="300" />
 
 
 
@@ -25,7 +25,8 @@ Our website is designed to provide:
 - **Live Updates:** Instant, real-time display of lottery results.
 - **Result Analysis:** Analyze trends to make informed decisions.
 
-![IMG_4166](https://github.com/user-attachments/assets/050c4ce8-414d-442d-befc-10d3c78ac7f6)
+<img src="https://github.com/user-attachments/assets/050c4ce8-414d-442d-befc-10d3c78ac7f6" alt="IMG_4166" width="300" />
+
 
 
 
