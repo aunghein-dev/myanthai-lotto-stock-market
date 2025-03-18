@@ -13,9 +13,9 @@ async function generateCalendar() {
   }
   
 
-  // Calculate the end year and end month for the last 6 months
+  // Calculate the end year and end month for the last 2 months
   let endYear = startYear;
-  let endMonth = startMonth - 3;
+  let endMonth = startMonth - 2;
 
   if (endMonth < 0) {
     endMonth += 12;
