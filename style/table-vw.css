@@ -6,6 +6,7 @@
   text-align: center;
   margin-top: -10px;
 }
+
 .header-of-table-month{
   text-align: center;
   padding: 16px 20px;
@@ -23,7 +24,6 @@
   box-shadow: 1px -1px 8px rgba(232, 203, 255, 0.4);
 }
 
-
 .styled-table {
   margin-top: 30px;
   margin-bottom: 110px;
@@ -36,7 +36,6 @@
   border-radius: 10px;
   overflow: hidden; /* ✅ Prevents content overflow */
 }
-
 
 
 .ideal-row {
@@ -85,7 +84,7 @@
 }
 
 .td-header-of-time {
-  min-width: 60px;
+  min-width: 55px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -136,7 +135,6 @@
   }
 }
 
-
 /* Table Rows */
 .styled-table tbody tr {
   border-spacing: 0 2px;
@@ -157,8 +155,6 @@
 .header-number,.inner-num {
   position: relative; /* Ensures the tooltip is positioned relative to this */
 }
-
-
 
 /* Tooltip Styling */
 .tooltip,.tooltip-i{
@@ -183,7 +179,6 @@
   padding: 1px 4px;
   background-color: rgb(31, 125, 58);
 }
-
 
 /* Apply border to all table cells */
 .styled-table th,
