@@ -292,14 +292,19 @@ async function fetchFinishedResults() {
 
     const lastData = Array.isArray(data) && data.length > 0 ? data[0] : {};
 
-    return lastData || {};
+    if(isLiveActive){
+      if (lastData.date !== new Date().toISOString().split("T")[0]) {
+        return {};
+      }
+    } else {
+      return lastData || {};
+    }
   } 
   catch (error) {
     console.error("Error fetching data:", error);
     return {}; // Return empty object on failure
   }
 }
-
 
 
 async function renderingShowingLastResults() {
