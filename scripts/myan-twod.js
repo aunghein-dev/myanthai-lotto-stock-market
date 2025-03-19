@@ -442,7 +442,7 @@ async function renderMainNumber() {
     console.log(newNumber);
     
     currentNumber = newNumber; // Update stored number
-  }, 1000); // Change every 1 second
+  }, 3000); // Change every 3 seconds
 }
 
 
