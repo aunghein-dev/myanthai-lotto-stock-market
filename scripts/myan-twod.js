@@ -378,11 +378,22 @@ async function renderingShowingLastResults() {
   }
 }
 
-function renderingResultNormal(){
-   renderMorningInPage(cachedMorning);
-   renderEveningInPage(cachedEvening);
-}
+function renderingResultNormal() {
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+  const currentSecond = now.getSeconds();
 
+  // Check if it's between 12:00:00 PM and 12:02:00 PM
+  if (currentHour === 12 && (currentMinute === 0 || currentMinute === 1 || (currentMinute === 2 && currentSecond === 0))) {
+      renderMorningInPage(cachedMorning);
+  }
+
+  // Check if it's between 4:29:00 PM and 4:31:00 PM
+  if (currentHour === 16 && (currentMinute === 29 || currentMinute === 30 || (currentMinute === 31 && currentSecond === 0))) {
+      renderEveningInPage(cachedEvening);
+  }
+}
 
 
  
