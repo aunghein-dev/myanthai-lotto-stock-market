@@ -120,10 +120,7 @@ async function stopLiveFetch() {
 
    renderingResultNormal();
 
-  let updatedTimeContainer = document.querySelector(".updated-time-container");
-  let finishedTime = await fetchFinishedTime(); // Get the latest stock_datetime
-  updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
-
+ 
   if (fetchMainInterval) {
     clearInterval(fetchMainInterval);
     fetchMainInterval = null;
@@ -169,23 +166,13 @@ async function fetchNewNumber() {
     let newSet = data.live.set;
     let newValue = data.live.value;
     let newDigit = data.live.twod;
-  
-    let latestStockDatetime = "";
-    if (data.result.length > 0) {
-      latestStockDatetime = data.result[data.result.length - 1].stock_datetime;
-    }
-
-    // Convert latestStockDatetime to a Date object
-    let latestStockDate = new Date(latestStockDatetime);
-    let thresholdTime = new Date();
-    thresholdTime.setHours(12, 1, 5, 0); // Set to 12:1:05 PM
-
+    let dateTime = data.live.time;
 
     const now = new Date();
     const morningTarget = new Date();
     const eveningTarget = new Date();
     morningTarget.setHours(12, 1, 1, 0); // 12:01:01 PM
-    eveningTarget.setHours(16, 29, 58, 0) // 4:30:00 PM
+    eveningTarget.setHours(16, 30, 0, 0) // 4:30:00 PM
   
 
     if (
@@ -196,6 +183,7 @@ async function fetchNewNumber() {
       cachedMorning.set = newSet;
       cachedMorning.value = newValue;
       cachedMorning.twod = newDigit;
+      cachedMorning.time = dateTime;
       localStorage.setItem('cachedMorningLocal', JSON.stringify(cachedMorning));
     }
     
@@ -207,6 +195,7 @@ async function fetchNewNumber() {
       cachedEvening.set = newSet;
       cachedEvening.value = newValue;
       cachedEvening.twod = newDigit;
+      cachedEvening.time = dateTime;
       localStorage.setItem('cachedEveningLocal',JSON.stringify(cachedEvening));
     }
 
@@ -263,18 +252,19 @@ async function fetchFinishedTime() {
       return "";
     }
 
-    // Filter only valid results (those with a non-null history_id)
-    const validResults = data.result.filter(item => item.history_id !== null);
+    // Filter valid results with a non-null history_id and exclude specified open times
+    const validResults = data.result.filter(item =>
+      item.history_id !== null && item.open_time !== "11:00:00" && item.open_time !== "15:00:00"
+    );
 
     if (validResults.length === 0) {
       console.warn("⚠️ No valid finished stock data found.");
       return "";
     }
 
-    // Find the latest stock_datetime
+    // Find the latest stock_datetime from filtered results
     validResults.sort((a, b) => new Date(b.stock_datetime) - new Date(a.stock_datetime));
 
-   
     return validResults[0].stock_datetime;
 
   } catch (error) {
@@ -312,7 +302,7 @@ async function fetchFinishedResults() {
 async function renderingShowingLastResults() {
   try {
     let finishedResults = await fetchFinishedResults();
-    let finishedTime = await fetchFinishedTime(); // Get the latest stock_datetime
+    finishedDateTime = await fetchFinishedTime(); // Get the latest stock_datetime
     let updatedTimeContainer = document.querySelector(".updated-time-container");
     if (!finishedResults || !Array.isArray(finishedResults.child)) {
       console.log("No valid data available.");
@@ -334,24 +324,15 @@ async function renderingShowingLastResults() {
     eveningEnd.setHours(16, 30, 0, 999);
 
     finishedResults.child.forEach((item) => {
-      if (now >= morningStart && now <= morningEnd && isLiveActive) {
-        if (item.time === '16:30:00') {
-          console.log("Rendering Evening Result during Morning Live Active");
-          renderEveningInPage({});
-        }
-      }
 
-      if (now >= eveningStart && now <= eveningEnd && isLiveActive) {
         if (item.time === '12:01:00') {
-          console.log("Rendering Morning Result during Evening Live Active");
           renderMorningInPage(item);
         }
-      }
+      
 
       if (!isLiveActive) {
         if (item.time === '12:01:00') {
           renderMorningInPage(item);
-          localStorage.removeItem('cachedMorningLocal');
         } else {
           if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 2){
             renderMorningInPage(cachedMorning);
@@ -359,7 +340,6 @@ async function renderingShowingLastResults() {
         }
         if (item.time === '16:30:00') {
           renderEveningInPage(item);
-          localStorage.removeItem('cachedEveningLocal');
         } else {
           if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 31){
             renderEveningInPage(cachedEvening);
@@ -368,10 +348,10 @@ async function renderingShowingLastResults() {
       }
 
       if(!isLiveActive){
-        if (!isLiveActive && now > morningEnd && now < eveningStart) {
-            updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
-        } else if (!isLiveActive){
-          updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
+        if (now > morningEnd && now < eveningStart) {
+              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
+          } else {
+              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
         } 
       }
       
@@ -386,18 +366,20 @@ function renderingResultNormal() {
   const currentHour = now.getHours();
   const currentMinute = now.getMinutes();
   const currentSecond = now.getSeconds();
+  let updatedTimeContainer = document.querySelector(".updated-time-container");
 
   // Check if it's between 12:00:00 PM and 12:02:00 PM
   if (currentHour === 12 && (currentMinute === 0 || currentMinute === 1 || (currentMinute === 2 && currentSecond === 0))) {
       renderMorningInPage(cachedMorning);
+      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
   }
 
   // Check if it's between 4:29:00 PM and 4:31:00 PM
   if (currentHour === 16 && (currentMinute === 29 || currentMinute === 30 || (currentMinute === 31 && currentSecond === 0))) {
       renderEveningInPage(cachedEvening);
+      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
   }
 }
-
 
  
 
@@ -419,6 +401,7 @@ function renderMorningInPage(itemParam) {
   if (!isLiveActive) {
     document.querySelector('.main-number').innerHTML = itemParam.twod;
   }
+
 }
 
 
@@ -445,7 +428,7 @@ async function fetchMainNumber() {
 
 let intervalId;
 
-function renderMainNumber() {
+async function renderMainNumber() {
   let currentNumber = ""; // Start with "00"
 
   intervalId = setInterval(async () => {
@@ -471,7 +454,7 @@ function renderMainNumber() {
     }
 
     currentNumber = newNumber; // Update stored number
-  }, 3000); // Change every 3 second
+  }, 1000); // Change every 1 second
 }
 
 do {renderMainNumber();}
