@@ -417,13 +417,20 @@ async function fetchMainNumber() {
   }
 }
 
-renderMainNumber();
 
-async function renderMainNumber() {
+let intervalId;
+
+function renderMainNumber() {
   let currentNumber = ""; // Start with "00"
 
-  setInterval(async () => {
+  intervalId = setInterval(async () => {
+    if (!isLiveActive) {
+      clearInterval(intervalId);  // Stop immediately if isLiveActive is false
+      console.log("Stopped rendering because isLiveActive is false.");
+      return;
+    }
     const newNumber = await fetchMainNumber();
+
     mainNumberElement.innerHTML = ""; // Clear previous digits
 
     for (let i = 0; i < 2; i++) {
@@ -439,11 +446,12 @@ async function renderMainNumber() {
       mainNumberElement.appendChild(digitSpan);
     }
 
-    console.log(newNumber);
-    
     currentNumber = newNumber; // Update stored number
-  }, 3000); // Change every 3 seconds
+  }, 3000); // Change every 3 second
 }
+
+do {renderMainNumber();}
+while (isLiveActive);
 
 
 
