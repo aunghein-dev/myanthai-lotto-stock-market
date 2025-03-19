@@ -27,23 +27,6 @@ let cachedEvening = JSON.parse(localStorage.getItem('cachedMorningLocal')) ||{
 
 
 
-// ✅ Fetch and update main number
-async function fetchMainNumber() {
-  try {
-    const response = await fetch("https://api.thaistock2d.com/live");
-    const data = await response.json();
-
-    let newNumber = data.live.twod;
-
-    return newNumber;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return "";
-  }
-}
-
-
-
 // Function to update the UI with the current system time (local time)
 function updateClock() {
   let updatedTimeContainer = document.querySelector(".updated-time-container");
@@ -108,8 +91,7 @@ async function startLiveFetch() {
   const live = await isLiveTime();
 
   if (live) {
-   
-
+  
     // Start only if not already running
     if (!fetchMainInterval) {
       fetchMainNumber(); // Fetch immediately
@@ -417,6 +399,26 @@ function renderMorningInPage(itemParam) {
 
 renderingShowingLastResults();
 
+
+
+// ✅ Fetch and update main number
+async function fetchMainNumber() {
+  try {
+    const response = await fetch("https://api.thaistock2d.com/live");
+    const data = await response.json();
+
+    let newNumber = data.live.twod;
+    
+    return newNumber;
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return "";
+  }
+}
+
+renderMainNumber();
+
 async function renderMainNumber() {
   let currentNumber = ""; // Start with "00"
 
@@ -437,8 +439,10 @@ async function renderMainNumber() {
       mainNumberElement.appendChild(digitSpan);
     }
 
+    console.log(newNumber);
+    
     currentNumber = newNumber; // Update stored number
-  }, 1000); // Change every 2 seconds
+  }, 1000); // Change every 1 second
 }
 
 
