@@ -18,7 +18,7 @@ let cachedMorning = JSON.parse(localStorage.getItem('cachedMorningLocal')) || {
   time: "--"
 };
 
-let cachedEvening = JSON.parse(localStorage.getItem('cachedMorningLocal')) ||{
+let cachedEvening = JSON.parse(localStorage.getItem('cachedEveningLocal')) || {
   set: "--",
   value: "--",
   twod: "--",
@@ -118,7 +118,8 @@ async function startLiveFetch() {
 
 async function stopLiveFetch() {
 
-  renderingNormalRESULTS();
+   renderingResultNormal();
+
   let updatedTimeContainer = document.querySelector(".updated-time-container");
   let finishedTime = await fetchFinishedTime(); // Get the latest stock_datetime
   updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
@@ -159,8 +160,6 @@ async function checkLiveStatus() {
 checkLiveStatus(); // Start the live status check
 
 async function fetchNewNumber() {
-  localStorage.removeItem('cachedMorningLocal');
-  localStorage.removeItem('cachedEveningLocal');
   try {
     const response = await fetch(`https://api.thaistock2d.com/live?t=${Date.now()}`); // Prevent caching
     if (!response.ok) throw new Error("Network response was not ok");
@@ -182,14 +181,29 @@ async function fetchNewNumber() {
     thresholdTime.setHours(12, 1, 5, 0); // Set to 12:1:05 PM
 
 
-    if(lastUpdatedTime <= new Date().setHours(12,1,5,0) && lastUpdatedTime >= new Date().setHours(12,0,59,0)){
+    const now = new Date();
+    const morningTarget = new Date();
+    const eveningTarget = new Date();
+    morningTarget.setHours(12, 1, 1, 0); // 12:01:01 PM
+    eveningTarget.setHours(16, 29, 58, 0) // 4:30:00 PM
+  
+
+    if (
+      now.getHours() === morningTarget.getHours() &&
+      now.getMinutes() === morningTarget.getMinutes() &&
+      now.getSeconds() === morningTarget.getSeconds()
+    ) {
       cachedMorning.set = newSet;
       cachedMorning.value = newValue;
       cachedMorning.twod = newDigit;
-      localStorage.setItem('cachedMorningLocal',JSON.stringify(cachedMorning));
+      localStorage.setItem('cachedMorningLocal', JSON.stringify(cachedMorning));
     }
-
-    if(lastUpdatedTime <= new Date().setHours(16,30,5,0) && lastUpdatedTime >= new Date().setHours(16,29,99,0)){
+    
+    if (
+      now.getHours() === eveningTarget.getHours() &&
+      now.getMinutes() === eveningTarget.getMinutes() &&
+      now.getSeconds() === eveningTarget.getSeconds()
+    ) {
       cachedEvening.set = newSet;
       cachedEvening.value = newValue;
       cachedEvening.twod = newDigit;
@@ -197,15 +211,18 @@ async function fetchNewNumber() {
     }
 
     // Apply fade-in and fade-out effect based on time
-    if (latestStockDate < thresholdTime) {
+    const currentHour = new Date().getHours();
+
+    if (currentHour <= 12) {
       updateWithFade(".js-morning-set-result", newSet);
       updateWithFade(".js-morning-value-result", newValue);
       updateWithFade(".js-morning-result-digit", "--");
-    } else {
-     updateWithFade(".js-evening-set-result", newSet);
-     updateWithFade(".js-evening-value-result", newValue);
-     updateWithFade(".js-evening-result-digit", "--");
+    } else if (currentHour >= 13) {
+      updateWithFade(".js-evening-set-result", newSet);
+      updateWithFade(".js-evening-value-result", newValue);
+      updateWithFade(".js-evening-result-digit", "--");
     }
+
 
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -300,7 +317,6 @@ async function renderingShowingLastResults() {
       console.log("No valid data available.");
       return;
     }
-  
 
     let now = new Date();
 
@@ -334,11 +350,20 @@ async function renderingShowingLastResults() {
       if (!isLiveActive) {
         if (item.time === '12:01:00') {
           renderMorningInPage(item);
+        } else {
+          if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 2){
+            renderMorningInPage(cachedMorning);
+          }
         }
         if (item.time === '16:30:00') {
           renderEveningInPage(item);
+        } else {
+          if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 31){
+            renderEveningInPage(cachedEvening);
+          }
         }
       }
+
       if(!isLiveActive){
         if (!isLiveActive && now > morningEnd && now < eveningStart) {
             updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
@@ -353,28 +378,14 @@ async function renderingShowingLastResults() {
   }
 }
 
-async function renderingNormalRESULTS(){
-    let finishedResults = await fetchFinishedResults();
-    finishedResults.child.forEach((item) => {
-
-    if (!isLiveActive) {
-      if (item.time === '12:01:00') {
-        if(item.twod === "--"){
-          renderMorningInPage(cachedMorning);
-        } else {
-          renderMorningInPage(item);
-        }
-      }
-      if (item.time === '16:30:00') {
-        if(item.twod === "--"){
-          renderEveningInPage(cachedEvening);
-        } else {
-          renderEveningInPage(item);
-        }
-      }
-    }
-  })
+function renderingResultNormal(){
+   renderMorningInPage(cachedMorning);
+   renderEveningInPage(cachedEvening);
 }
+
+
+
+ 
 
 // ✅ Render Evening Result
 function renderEveningInPage(itemParam) {
@@ -426,7 +437,6 @@ function renderMainNumber() {
   intervalId = setInterval(async () => {
     if (!isLiveActive) {
       clearInterval(intervalId);  // Stop immediately if isLiveActive is false
-      console.log("Stopped rendering because isLiveActive is false.");
       return;
     }
     const newNumber = await fetchMainNumber();
