@@ -284,25 +284,26 @@ async function fetchFinishedTime() {
 }
 
 
-
 async function fetchFinishedResults() {
   try {
     const response = await fetch("https://api.thaistock2d.com/2d_result");
     const data = await response.json();
 
-    const lastData = Array.isArray(data) && data.length > 0 ? data[0] : {};
+    const lastData = Array.isArray(data) && data.length > 0 ? data[0] : null;
 
-    if(isLiveActive){
-      if (lastData.date !== new Date().toISOString().split("T")[0]) {
-        return {};
+    if (isLiveActive) {
+      // Ensure we return valid lastData when the date matches
+      if (lastData && lastData.date === new Date().toISOString().split("T")[0]) {
+        return lastData;
+      } else {
+        return {}; // Return null to indicate no valid data
       }
     } else {
       return lastData || {};
     }
-  } 
-  catch (error) {
+  } catch (error) {
     console.error("Error fetching data:", error);
-    return {}; // Return empty object on failure
+    return null; // Return null on failure to avoid confusion
   }
 }
 
@@ -336,7 +337,7 @@ async function renderingShowingLastResults() {
       if (now >= morningStart && now <= morningEnd && isLiveActive) {
         if (item.time === '16:30:00') {
           console.log("Rendering Evening Result during Morning Live Active");
-          //renderEveningInPage(item);
+          renderEveningInPage({});
         }
       }
 
@@ -350,6 +351,7 @@ async function renderingShowingLastResults() {
       if (!isLiveActive) {
         if (item.time === '12:01:00') {
           renderMorningInPage(item);
+          localStorage.removeItem('cachedMorningLocal');
         } else {
           if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 2){
             renderMorningInPage(cachedMorning);
@@ -357,6 +359,7 @@ async function renderingShowingLastResults() {
         }
         if (item.time === '16:30:00') {
           renderEveningInPage(item);
+          localStorage.removeItem('cachedEveningLocal');
         } else {
           if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 31){
             renderEveningInPage(cachedEvening);
