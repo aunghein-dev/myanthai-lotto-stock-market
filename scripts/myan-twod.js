@@ -26,6 +26,7 @@ let cachedEvening = JSON.parse(localStorage.getItem('cachedMorningLocal')) ||{
 };
 
 
+
 // ✅ Fetch and update main number
 async function fetchMainNumber() {
   try {
@@ -307,6 +308,7 @@ async function fetchFinishedResults() {
 }
 
 
+
 async function renderingShowingLastResults() {
   try {
     let finishedResults = await fetchFinishedResults();
@@ -362,7 +364,7 @@ async function renderingShowingLastResults() {
           updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedTime}`;
         } 
       }
-
+      
     });
   } catch (error) {
     console.error("Error fetching finished results:", error);
@@ -436,9 +438,6 @@ async function renderMainNumber() {
     }
 
     currentNumber = newNumber; // Update stored number
-  }, 1000); // Change every 2 seconds
+  }, 1000); // Change every 1 second
 }
-
-
-
 
