@@ -338,7 +338,7 @@ async function renderingShowingLastResults() {
       if (now >= morningStart && now <= morningEnd && isLiveActive) {
         if (item.time === '16:30:00') {
           console.log("Rendering Evening Result during Morning Live Active");
-          renderEveningInPage(item);
+          //renderEveningInPage(item);
         }
       }
 
@@ -438,6 +438,9 @@ async function renderMainNumber() {
     }
 
     currentNumber = newNumber; // Update stored number
-  }, 1000); // Change every 1 second
+  }, 1000); // Change every 2 seconds
 }
+
+
+
 
