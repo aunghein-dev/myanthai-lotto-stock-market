@@ -3,7 +3,7 @@ body{
   margin: 0;
   position: relative;
   padding-top: 100px;
-  background-color: rgba(36,30,89,255);
+  background-color: rgba(36, 30, 89, 1); /* Fully opaque */
   /*background: url('web-background.jpg');*/
   padding-bottom: 50px;
 }
