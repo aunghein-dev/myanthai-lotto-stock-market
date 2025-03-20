@@ -26,7 +26,6 @@ let cachedEvening = JSON.parse(localStorage.getItem('cachedEveningLocal')) || {
 };
 
 
-
 // Function to update the UI with the current system time (local time)
 function updateClock() {
   let updatedTimeContainer = document.querySelector(".updated-time-container");
@@ -324,34 +323,29 @@ async function renderingShowingLastResults() {
     eveningEnd.setHours(16, 30, 0, 999);
 
     finishedResults.child.forEach((item) => {
-
-        if (item.time === '12:01:00') {
-          renderMorningInPage(item);
-        }
       
-
-      if (!isLiveActive) {
-        if (item.time === '12:01:00') {
-          renderMorningInPage(item);
-        } else {
-          if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 2){
-            renderMorningInPage(cachedMorning);
-          }
-        }
-        if (item.time === '16:30:00') {
-          renderEveningInPage(item);
-        } else {
-          if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 31){
-            renderEveningInPage(cachedEvening);
-          }
+      if (item.time === '12:01:00') {
+        renderMorningInPage(item.set, item.value, item.twod);
+      } else {
+        if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 10){
+          renderMorningInPage(cachedMorning.set, cachedMorning.value, cachedMorning.twod);
         }
       }
 
+
+      if (item.time === '16:30:00') {
+        renderEveningInPage(item.set, item.value, item.twod);
+      } else {
+        if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 40){
+          renderEveningInPage(cachedEvening.set, cachedEvening.value, cachedEvening.twod);
+        }
+      }
+      
       if(!isLiveActive){
         if (now > morningEnd && now < eveningStart) {
-              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
-          } else {
-              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
+              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime===" " ? "12:01:01" : finishedDateTime}`;
+        } else if (now > eveningEnd) {
+              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime === " " ? "16:30:00" : finishedDateTime}`;
         } 
       }
       
@@ -370,36 +364,41 @@ function renderingResultNormal() {
 
   // Check if it's between 12:00:00 PM and 12:02:00 PM
   if (currentHour === 12 && (currentMinute === 0 || currentMinute === 1 || (currentMinute === 2 && currentSecond === 0))) {
-      renderMorningInPage(cachedMorning);
-      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
+      renderMorningInPage(cachedMorning.set, cachedMorning.value, cachedMorning.twod);
+      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime === " " ? "12:01:01" : finishedDateTime}`;
+
+      console.log(cachedMorning);
+      
   }
 
   // Check if it's between 4:29:00 PM and 4:31:00 PM
   if (currentHour === 16 && (currentMinute === 29 || currentMinute === 30 || (currentMinute === 31 && currentSecond === 0))) {
-      renderEveningInPage(cachedEvening);
-      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
+      renderEveningInPage(cachedEvening.set, cachedEvening.value, cachedEvening.twod);
+      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime === " " ? "16:30:00" : finishedDateTime}`;
   }
+
+  
 }
 
  
 
 // ✅ Render Evening Result
-function renderEveningInPage(itemParam) {
- document.querySelector('.js-evening-set-result').textContent = itemParam.set;
- document.querySelector('.js-evening-value-result').textContent = itemParam.value;
- document.querySelector('.js-evening-result-digit').textContent = itemParam.twod;
+function renderEveningInPage(itemSet, itemValue, itemTwod) {
+ document.querySelector('.js-evening-set-result').textContent = itemSet;
+ document.querySelector('.js-evening-value-result').textContent = itemValue;
+ document.querySelector('.js-evening-result-digit').textContent = itemTwod;
   if (!isLiveActive) {
-    document.querySelector('.main-number').innerHTML = itemParam.twod;
+    document.querySelector('.main-number').innerHTML = itemTwod;
   }
 }
 
 // ✅ Render Morning Result
-function renderMorningInPage(itemParam) {
-  document.querySelector('.js-morning-set-result').textContent = itemParam.set;
-  document.querySelector('.js-morning-value-result').textContent = itemParam.value;
-  document.querySelector('.js-morning-result-digit').textContent = itemParam.twod;
+function renderMorningInPage(itemSet, itemValue, itemTwod) {
+  document.querySelector('.js-morning-set-result').textContent = itemSet;
+  document.querySelector('.js-morning-value-result').textContent = itemValue;
+  document.querySelector('.js-morning-result-digit').textContent = itemTwod;
   if (!isLiveActive) {
-    document.querySelector('.main-number').innerHTML = itemParam.twod;
+    document.querySelector('.main-number').innerHTML = itemTwod;
   }
 
 }
