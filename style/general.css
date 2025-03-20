@@ -3,7 +3,8 @@ body{
   margin: 0;
   position: relative;
   padding-top: 100px;
-  background: url('web-background.jpg');
+  background-color: rgba(36,30,89,255);
+  /*background: url('web-background.jpg');*/
   padding-bottom: 50px;
 }
 
