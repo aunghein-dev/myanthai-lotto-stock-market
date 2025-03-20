@@ -3,8 +3,11 @@ body{
   margin: 0;
   position: relative;
   padding-top: 100px;
-  background-color: rgba(36, 30, 89, 1); /* Fully opaque */
-  /*background: url('web-background.jpg');*/
+  background-color: #241e59; /* Dark fallback color */
+  background-image: url('web-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding-bottom: 50px;
 }
 
