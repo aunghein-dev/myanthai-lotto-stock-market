@@ -310,20 +310,20 @@ async function renderingShowingLastResults() {
 
     finishedResults.child.forEach((item) => {
       
-      if (item.time === '12:01:00') {
-        renderMorningInPage(item.set, item.value, item.twod);
-      } else {
-        if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 10){
-          renderMorningInPage(cachedMorning.set, cachedMorning.value, cachedMorning.twod);
+       if(!isLiveActive){
+        if (item.time === '12:01:00') {
+          renderMorningInPage(item.set, item.value, item.twod);
+        } else {
+          if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 10){
+            renderMorningInPage(cachedMorning.set, cachedMorning.value, cachedMorning.twod);
+          }
         }
-      }
-
-
-      if (item.time === '16:30:00') {
-        renderEveningInPage(item.set, item.value, item.twod);
-      } else {
-        if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 40){
-          renderEveningInPage(cachedEvening.set, cachedEvening.value, cachedEvening.twod);
+        if (item.time === '16:30:00') {
+          renderEveningInPage(item.set, item.value, item.twod);
+        } else {
+          if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 40){
+            renderEveningInPage(cachedEvening.set, cachedEvening.value, cachedEvening.twod);
+          }
         }
       }
       
