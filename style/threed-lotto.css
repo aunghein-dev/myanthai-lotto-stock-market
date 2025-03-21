@@ -10,9 +10,9 @@
 
 
 .year-title{
-  color: white;
+  color: var(--text-color);
   font-size: 30px;
-  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.1);
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
   font-weight: 700;
   width: fit-content; /* Adjust width based on content */
   margin: 0 auto; /* Centers the element */
@@ -21,9 +21,9 @@
 
 .lotto-container{
   height: 100px;
-  background-color: rgba(231, 231, 231, 0.4);
+  background-color: var(--box-bg-color);
   border-radius: 12px;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--box-bg-shadow);
   padding-left: 12px;
   padding-right: 12px;
   display: flex;
@@ -39,7 +39,7 @@
 }
 .lotto-month,
 .lotto-day {
-  color: rgb(224, 224, 224);
+  color: var(--text-color);
   font-size: 16px;
   font-weight: 700;
   display: flex;
@@ -51,16 +51,16 @@
 .lotto-inner-header{
   font-size: 12px;
   font-weight: 500;
-  color: black;
+  color: var(--result-time-text-color);
   margin-bottom: 6px;
 }
 
 .myan-3d-num,.thai-lotto-num{
-  color: rgb(60, 30, 112);
+  color: var(--text-color);
   font-size: 22px;
   font-weight: 700;
 }
 
 .thai-lotto-num0,.myan-3d-num0 {
-  color: rgb(255, 166, 0);
+  color: var(--result-digit-color);
 }

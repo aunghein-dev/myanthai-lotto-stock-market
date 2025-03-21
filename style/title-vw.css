@@ -1,18 +1,19 @@
 .title-vw-date-header {
   text-align: center;
   padding: 16px 20px;
-  background-color: rgb(231, 231, 231);
+  background-color: var(--result-month-container);
+  color: var(--main-num-color);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 250px;
-  border-radius: 12px;
+  border-radius: 16px;
   /* Center horizontally */
   margin: 0 auto;
   font-size: 16px;
   font-weight: 700;
   margin-bottom: -20px;
-  box-shadow: 1px -1px 8px rgba(232, 203, 255, 0.4);
+  box-shadow: var(--box-bg-shadow);
 }
 
 

@@ -8,7 +8,7 @@
   left: 0;
   right: 0;
   height: 60px;
-  background-color: rgb(47, 47, 47);
+  background-color: var(--navi-bar-bg-color);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -41,7 +41,7 @@
 }
 
 .tab-button:hover {
-  background-color: rgb(75, 75, 75);
+  background-color: var(--navi-bar-hover-color);
   border-radius: 5px;
 }
 
@@ -49,7 +49,7 @@
   /*
   background: #007bff
   */
-  background-color: rgb(75, 75, 75);
+  background-color: var(--navi-bar-hover-color);
   color: white;
   border-radius: 5px;
 }

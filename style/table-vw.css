@@ -6,40 +6,43 @@
   text-align: center;
   margin-top: -10px;
 }
-
 .header-of-table-month{
   text-align: center;
   padding: 16px 20px;
-  background-color: rgb(231, 231, 231);
+  background-color: var(--result-month-container);
+  color: var(--main-num-color);
   display: flex;
   justify-content: center;
   align-items: center;
   width: 230px;
-  border-radius: 12px;
+  border-radius: 16px;
   /* Center horizontally */
   margin: 0 auto;
   font-size: 16px;
   font-weight: 700;
   margin-bottom: -10px;
-  box-shadow: 1px -1px 8px rgba(232, 203, 255, 0.4);
+  box-shadow: var(--box-bg-shadow);
 }
 
+
 .styled-table {
+  background-color: var(--tb-bg-color);
   margin-top: 30px;
   margin-bottom: 110px;
-  color: white;
+  color: var(--text-color);
   border-collapse: separate; /* ✅ Allows border-radius to work */
   border-spacing: 0;
   font-size: 0.8em;
   width: 100%;
-  border: 1px solid white;
-  border-radius: 10px;
+  border: 0.2px solid var(--text-color);
+  border-radius: 16px;
   overflow: hidden; /* ✅ Prevents content overflow */
 }
 
 
+
 .ideal-row {
-  border-bottom: 1px solid white; /* Default closing border for each group */
+  border-bottom: 1px solid var(--text-color); /* Default closing border for each group */
 }
 
 .ideal-row:last-child {
@@ -49,8 +52,8 @@
 
 /* Table Header */
 .styled-table thead tr {
-  background-color: rgba(231, 231, 231, 0.4);
-  color: #ffffff;
+  background-color:var(--header-box-month);
+  color: black;
   text-align: center;
   font-size: 14px;
 }
@@ -65,7 +68,7 @@
 }
 
 .main-result-twod-table{
-  color: rgb(255, 166, 0);
+  color: var(--tb-digit-color);
   font-weight: 700;
 }
 
@@ -81,6 +84,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: center;
+  border-top-left-radius: 16px;
+}
+
+.right-corner-round-cell{
+  border-top-right-radius: 16px;
 }
 
 .td-header-of-time {
@@ -91,7 +99,6 @@
 }
 
 .td-header-of-twod {
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -135,6 +142,7 @@
   }
 }
 
+
 /* Table Rows */
 .styled-table tbody tr {
   border-spacing: 0 2px;
@@ -147,7 +155,8 @@
 }
 
 .active-b {
-  background: #7a4bb3;
+  background: var(--text-color);
+  color: var(--main-num-color);
   border-radius: 1px;
   padding: 2px 4px;
 }
@@ -156,12 +165,15 @@
   position: relative; /* Ensures the tooltip is positioned relative to this */
 }
 
+
+
 /* Tooltip Styling */
 .tooltip,.tooltip-i{
   position: absolute;
   border-radius: 20px;
   color: white;
-  background-color: rgb(95, 0, 146);
+  background-color: var(--noti-back-bg-color);
+  color: var(--tooltip-color);
   padding: 1px 4px;
   font-size: 14px;
   transition: opacity 0.2s ease-in-out;
@@ -177,29 +189,32 @@
   top: -2px;  
   font-size: 11px;
   padding: 1px 4px;
-  background-color: rgb(31, 125, 58);
+  background-color: rgb(29, 170, 69);
 }
+
 
 /* Apply border to all table cells */
 .styled-table th,
 .styled-table td {
-  border: 0.2px dotted rgb(124, 124, 124);
+  border: 0.2px dotted var(--dotted-line-color);
   padding: 8px; /* Add some spacing for better visibility */
 }
 
 /* Apply bottom border for all cells in the second row */
 .evening-row-twod td,
 .evening-row-twod th {
-  border-bottom: 0.2px solid rgb(124, 124, 124); /* Thicker bottom border for effect */
+  border-bottom: 0.2px solid var(--dotted-line-color); /* Thicker bottom border for effect */
   padding-bottom: 5px; /* Adds space between content and border */
 }
 
 /* Ensure rowspan cell gets a bottom border */
 td[rowspan] {
-  border-bottom: 1px solid rgb(124, 124, 124);
+  border-bottom: 0.2px solid var(--dotted-line-color);
 }
 
-/* Alternative for modern browsers */
+
+/* Alternative for modern browsers
 tr:has(td[rowspan]) td[rowspan] {
-  border-bottom: 1px solid rgb(124, 124, 124);
+  border-bottom: 0.2px solid var(--dotted-line-color);
 }
+ */

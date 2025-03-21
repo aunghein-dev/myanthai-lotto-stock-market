@@ -3,7 +3,7 @@
   height: 36px;
   overflow: hidden;
   position: relative;
-  background-color: rgba(0, 0, 0, 0.3); /* Dark Gray Background */
+  background-color: var(--sliding-bg-color);
   margin-top: -40px;
   display: flex;
   flex-direction: row;
@@ -14,7 +14,7 @@
   position: absolute;
   white-space: nowrap;
   font-size: 16px;
-  color: #e0e0e0;
+  color: var(--sliding-text-color);
   transform: translateX(100vw); /* Start completely off-screen */
   animation: scrollingText 18s linear infinite;
 }

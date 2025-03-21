@@ -1,50 +1,163 @@
-body{
+:root {
+  /* Default (light mode) */
+  color-scheme: light dark;
+  --bg-color: white;
+  --text-color: rgb(85, 58, 36);
+  --navi-bar-bg-color: rgb(88,60,36);
+  --navi-bar-hover-color: rgb(98, 68, 43);
+  --box-bg-color: rgba(254,243,236,1);
+  --box-bg-shadow:  0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 2px rgba(0, 0, 0, 0.12);
+  --result-time-text-color: rgba(149,139,130,255);
+  --setvalue-text-color: rgb(88,60,36);
+  --dotted-line-color: rgb(55, 55, 55);
+  --result-digit-color:  rgba(211,113,60,1);
+  --main-num-color: white;
+  --mainnum-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+  --sliding-bg-color: rgba(178, 178, 178, 0.3); 
+  --sliding-text-color:    #303030;
+  --result-month-container: rgb(85, 58, 36);
+  --tb-cell-border :rgba(160, 160, 160, 0.8);
+  --curr-date-box-border:  rgb(85, 58, 36);
+  --dayofmonth-text-color: rgba(0, 0, 0, 0.4);
+  --header-box-month: rgba(254,243,236,1);
+  --noti-back-bg-color: rgb(239,93,10);
+  --live-area-color: rgb(85, 58, 36);
+  --time-update-color: rgba(254,243,236,1);
+  --tooltip-color: white;
+  --tb-header-color: white;
+  --daybox-color: white;
+  --tb-digit-color:  #ff7272;
+}
+
+body {
   font-family: Roboto, Arial;
   margin: 0;
   position: relative;
   padding-top: 100px;
-  background-color: #241e59; /* Dark fallback color */
-  background-image: url('web-background.jpg');
+  background-color: var(--bg-color);
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
   padding-bottom: 50px;
+  transition: background 0.3s ease-in-out; /* Smooth transition */
 }
 
+.dark-mode {
+  --bg-color: #121212;
+  --text-color:white;
+  --navi-bar-bg-color: #121212;
+  --navi-bar-hover-color:  rgb(75, 75, 75);
+  --box-bg-color: rgb(85, 58, 36);
+  --box-bg-shadow:  0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 2px rgba(0, 0, 0, 0.12);
+  --result-time-text-color: #a98e7d;
+  --setvalue-text-color: #a98e7d;
+  --dotted-line-color: rgb(161, 161, 161);
+  --result-digit-color:  rgba(254,243,236,1);
+  --main-num-color: #3E3E3E;
+  --mainnum-shadow:6px 1px 5px rgba(0, 0, 0, 0.4);
+  --sliding-bg-color: rgba(85, 58, 36, 0.6);
+  --sliding-text-color:  #ffffff;
+  --result-month-container: rgba(254,243,236,1);
+  --tb-cell-border :rgba(254, 254, 254, 0.4);
+  --curr-date-box-border: rgb(255, 255, 255);
+  --dayofmonth-text-color: rgba(213, 213, 213, 0.4);
+  --header-box-month:  rgba(254,243,236,1);
+  --noti-back-bg-color: #ff9c67;
+  --live-area-color:rgba(254,243,236,1);
+  --time-update-color: rgb(85, 58, 36);
+  --tooltip-color: black;
+  --tb-bg-color: rgb(85, 58, 36);
+  --tb-header-color: #3E3E3E;
+  --daybox-color: rgb(85, 58, 36);
+  --tb-digit-color:  #ff7272;
+}
+.light-mode {
+  --bg-color: ghostwhite;
+  --text-color: rgb(53, 36, 22);
+  --navi-bar-bg-color: rgb(85, 58, 36);
+  --navi-bar-hover-color: rgb(98, 68, 43);
+  --box-bg-color:  rgba(254,243,236,1);
+  --box-bg-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 2px rgba(0, 0, 0, 0.12);
+  --result-time-text-color: rgba(149,139,130,255);
+  --setvalue-text-color: rgb(88,60,36);
+  --dotted-line-color: rgb(55, 55, 55);
+  --result-digit-color: rgba(211,113,60,1);
+  --main-num-color: white;
+  --mainnum-shadow:4px 4px 10px rgba(0, 0, 0, 0.3);
+  --sliding-bg-color: rgba(178, 178, 178, 0.3); 
+  --sliding-text-color:  #303030;
+  --result-month-container: rgb(85, 58, 36);
+  --tb-cell-border :rgba(160, 160, 160, 0.8);
+  --curr-date-box-border:  rgb(85, 58, 36);
+  --dayofmonth-text-color: rgba(0, 0, 0, 0.4);
+  --header-box-month: rgba(254,243,236,1);
+  --noti-back-bg-color: rgb(239,93,10);
+  --live-area-color: rgb(85, 58, 36);
+  --time-update-color: rgba(254,243,236,1);
+  --tooltip-color: white;
+  --tb-header-color: white;
+  --daybox-color: white;
+  --tb-digit-color:  #ff7272;
+}
 
 p{
   margin: 0;
 }
 
-/*
-.main-number {
-  color: white;
-  font-weight: 700;
-  font-size: 120px;
-  display: flex;
-  justify-content: center;
-  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.4);
-  opacity: 1;
-  transition: opacity 1s ease-in-out;
-}
-
-.fade-out {
-  opacity: 0;
-}
-
-.fade-in {
-  opacity: 1;
-}
-*/
-
 .number-live-area{
+  margin-top: 40px;
+  padding-top: 1px;
+  position: relative;
   height: 200px;
+  background-color: var(--live-area-color);
+  margin-left: clamp(20px, 5vw, 100px); /* Reduced values */
+  margin-right: clamp(20px, 5vw, 100px); /* Reduced values */
+  border-radius: 16px;
+  box-shadow: var(--box-bg-shadow);
+}
+
+.theme-switch{
+  height: 24px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 20px;
+  background-color: rgb(180, 180, 180);
+  transition: 0.3s;
+}
+.theme-switch:hover{
+  scale: 1.1;
+  background-color: rgb(180, 180, 180);
+  border-radius: 20px;
+}
+
+.theme-switch-light-visible{
+  display: initial;
+}
+
+.theme-switch-dark-visible{
+  display: initial;
+}
+
+.theme-switch-light-invisible{
+  display: none;
+}
+
+.theme-switch-dark-invisible{
+  display: none;
 }
 
 .main-number {
-  color: white;
+  color: var(--main-num-color);
   font-weight: 700;
   font-size: 120px;
   display: flex;
   justify-content: center;
-  text-shadow: 6px 1px 5px rgba(0, 0, 0, 0.4);
+  text-shadow: var(--mainnum-shadow);
   gap: 5px; /* Space between digits */
   margin-top: 20px;
 }
@@ -74,7 +187,7 @@ p{
 
 
 .updated-time-container{
-  color: white;
+  color: var(--time-update-color);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -83,6 +196,5 @@ p{
 
 .updated-time-container img{
   margin-right: 4px;
-  height: 24px;
 }
 

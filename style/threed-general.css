@@ -8,7 +8,7 @@
   left: 0;
   right: 0;
   height: 60px;
-  background-color: rgb(47, 47, 47);
+  background-color: var(--navi-bar-bg-color);
   display: flex;
   justify-content: center; /* Centers items horizontally */
   align-items: center;

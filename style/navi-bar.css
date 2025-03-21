@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   height: 60px;
-  background-color: rgb(47, 47, 47);
+  background-color: var(--navi-bar-bg-color);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -46,7 +46,7 @@
 }
 .navi-right-section img:hover, .home-link:hover{
   scale: 1.06;
-  background-color: rgb(75, 75, 75);
+  background-color: var(--navi-bar-hover-color);
   border-radius: 5px;
 }
 .navi-right-section img:active, .home-link a:active{
