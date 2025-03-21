@@ -5,9 +5,11 @@ let isLiveActive = false; // Track if live data is available
 let lastUpdatedTime = null; // Store the last known API update time
 let isHoliday = false;
 
+
 let fetchMainInterval = null;
 let fetchNewInterval = null;
 let clockInterval = null;
+
 
 let cachedMorning = JSON.parse(localStorage.getItem('cachedMorningLocal')) || {
   set: "--",
@@ -22,6 +24,7 @@ let cachedEvening = JSON.parse(localStorage.getItem('cachedEveningLocal')) || {
   twod: "--",
   time: "--"
 };
+
 
 // Function to update the UI with the current system time (local time)
 function updateClock() {
@@ -41,9 +44,11 @@ function updateClock() {
       hour12: false, // Ensure 24-hour format
     }).replace(",", ""); // Remove comma in some locales
 
-    updatedTimeContainer.innerHTML = `<img src="icons/live.svg" />  Updating at ${formattedTime}`;
+    updatedTimeContainer.innerHTML = `<img src="icons/light-live.svg" /> Updating at ${formattedTime}`;
   }
 }
+
+
 
 async function isLiveTime() {
   try {
@@ -80,6 +85,7 @@ async function isLiveTime() {
   }
 }
 
+
 async function startLiveFetch() {
   const live = await isLiveTime();
 
@@ -108,9 +114,11 @@ async function startLiveFetch() {
   } 
 }
 
+
 async function stopLiveFetch() {
 
    renderingResultNormal();
+
  
   if (fetchMainInterval) {
     clearInterval(fetchMainInterval);
@@ -130,6 +138,8 @@ async function stopLiveFetch() {
     console.log("❌ updateClock stopped.");
   }
 }
+
+
 
 async function checkLiveStatus() {
   const live = await isLiveTime();
@@ -163,7 +173,6 @@ async function fetchNewNumber() {
     morningTarget.setHours(12, 1, 1, 0); // 12:01:01 PM
     eveningTarget.setHours(16, 30, 0, 0) // 4:30:00 PM
   
-
     if (
       now.getHours() === morningTarget.getHours() &&
       now.getMinutes() === morningTarget.getMinutes() &&
@@ -230,6 +239,7 @@ function showLoading() {
 // Initial call to display loading on page load
 showLoading();
 
+
 async function fetchFinishedTime() {
   try {
     const response = await fetch("https://api.thaistock2d.com/live");
@@ -261,6 +271,7 @@ async function fetchFinishedTime() {
   }
 }
 
+
 async function fetchFinishedResults() {
   try {
     const response = await fetch("https://api.thaistock2d.com/2d_result");
@@ -283,6 +294,8 @@ async function fetchFinishedResults() {
     return null; // Return null on failure to avoid confusion
   }
 }
+
+
 
 async function renderingShowingLastResults() {
   try {
@@ -308,24 +321,23 @@ async function renderingShowingLastResults() {
     let eveningEnd = new Date();
     eveningEnd.setHours(16, 30, 0, 999);
 
-    finishedResults.child.forEach((item) => {
-      
-       if(!isLiveActive){
-        if (item.time === '12:01:00') {
-          renderMorningInPage(item.set, item.value, item.twod);
-        } else {
-          if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 10){
-            renderMorningInPage(cachedMorning.set, cachedMorning.value, cachedMorning.twod);
-          }
-        }
-        if (item.time === '16:30:00') {
-          renderEveningInPage(item.set, item.value, item.twod);
-        } else {
-          if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 40){
-            renderEveningInPage(cachedEvening.set, cachedEvening.value, cachedEvening.twod);
-          }
-        }
+
+    if(finishedResults.child[1]) {
+      renderMorningInPage(finishedResults.child[1].set, finishedResults.child[1].value, finishedResults.child[1].twod);
+    } else {
+      if(now.getHours() === 12 && now.getMinutes() >= 1 && now.getMinutes() <= 6){
+        renderMorningInPage(cachedMorning.set, cachedMorning.value, cachedMorning.twod);
       }
+    }
+
+    if(finishedResults.child[3]) {
+      renderEveningInPage(finishedResults.child[3].set, finishedResults.child[3].value, finishedResults.child[3].twod);
+    } else {
+      if(now.getHours() === 16 && now.getMinutes() >= 30 && now.getMinutes() <= 35){
+        renderEveningInPage(cachedEvening.set, cachedEvening.value, cachedEvening.twod);
+      }
+    }
+
       
       if (!isLiveActive) {
         if (now > morningEnd && now < eveningStart) {
@@ -334,8 +346,7 @@ async function renderingShowingLastResults() {
             updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime.slice(11, 13) === "12" ? `${finishedDateTime.slice(0, 10)} 16:30:01` : finishedDateTime}`;
         }
       }    
-      
-    });
+
   } catch (error) {
     console.error("Error fetching finished results:", error);
   }
@@ -361,6 +372,8 @@ function renderingResultNormal() {
   }
 }
 
+ 
+
 // ✅ Render Evening Result
 function renderEveningInPage(itemSet, itemValue, itemTwod) {
  document.querySelector('.js-evening-set-result').textContent = itemSet;
@@ -381,6 +394,8 @@ function renderMorningInPage(itemSet, itemValue, itemTwod) {
   }
 
 }
+
+
 
 renderingShowingLastResults();
 

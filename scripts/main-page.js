@@ -1,8 +1,8 @@
 const textArray = [
   "မင်္ဂလာရှိသောနေ့ရက်လေး ဖြစ်ကြပါစေ...🌻",
-  "တနေ့တာ ကိစ္စအဝဝ အဆင်ပြေကြပါစေ...💐",
-  "Thank you for visiting our website.",
-  "We sincerely appreciate your support and look forward to serving you."
+  "အားလုံး အဆင်ပြေကြပါစေ...💜",
+  "Thank you for visiting our website. We sincerely appreciate your support and look forward to serving you."
+  
 ];
 
 let index = 0;
