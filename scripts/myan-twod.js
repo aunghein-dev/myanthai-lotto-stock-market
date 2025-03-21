@@ -5,11 +5,9 @@ let isLiveActive = false; // Track if live data is available
 let lastUpdatedTime = null; // Store the last known API update time
 let isHoliday = false;
 
-
 let fetchMainInterval = null;
 let fetchNewInterval = null;
 let clockInterval = null;
-
 
 let cachedMorning = JSON.parse(localStorage.getItem('cachedMorningLocal')) || {
   set: "--",
@@ -24,7 +22,6 @@ let cachedEvening = JSON.parse(localStorage.getItem('cachedEveningLocal')) || {
   twod: "--",
   time: "--"
 };
-
 
 // Function to update the UI with the current system time (local time)
 function updateClock() {
@@ -48,8 +45,6 @@ function updateClock() {
   }
 }
 
-
-
 async function isLiveTime() {
   try {
     const response = await fetch("https://api.thaistock2d.com/live");
@@ -63,14 +58,14 @@ async function isLiveTime() {
       morningStart.setHours(8, 40, 0, 0);
 
       let morningEnd = new Date();
-      morningEnd.setHours(12, 1, 0, 999);
+      morningEnd.setHours(12, 1, 1, 999);
 
       
       let eveningStart = new Date();
       eveningStart.setHours(13, 40, 0, 0);
 
       let eveningEnd = new Date();
-      eveningEnd.setHours(16, 30, 0, 999);  
+      eveningEnd.setHours(16, 30, 1, 999);  
 
       // Check if current time is within live trading hours
       isLiveActive =
@@ -84,7 +79,6 @@ async function isLiveTime() {
     return null;
   }
 }
-
 
 async function startLiveFetch() {
   const live = await isLiveTime();
@@ -114,11 +108,9 @@ async function startLiveFetch() {
   } 
 }
 
-
 async function stopLiveFetch() {
 
    renderingResultNormal();
-
  
   if (fetchMainInterval) {
     clearInterval(fetchMainInterval);
@@ -138,8 +130,6 @@ async function stopLiveFetch() {
     console.log("❌ updateClock stopped.");
   }
 }
-
-
 
 async function checkLiveStatus() {
   const live = await isLiveTime();
@@ -240,7 +230,6 @@ function showLoading() {
 // Initial call to display loading on page load
 showLoading();
 
-
 async function fetchFinishedTime() {
   try {
     const response = await fetch("https://api.thaistock2d.com/live");
@@ -272,7 +261,6 @@ async function fetchFinishedTime() {
   }
 }
 
-
 async function fetchFinishedResults() {
   try {
     const response = await fetch("https://api.thaistock2d.com/2d_result");
@@ -295,8 +283,6 @@ async function fetchFinishedResults() {
     return null; // Return null on failure to avoid confusion
   }
 }
-
-
 
 async function renderingShowingLastResults() {
   try {
@@ -341,13 +327,13 @@ async function renderingShowingLastResults() {
         }
       }
       
-      if(!isLiveActive){
+      if (!isLiveActive) {
         if (now > morningEnd && now < eveningStart) {
-              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime===" " ? "12:01:01" : finishedDateTime}`;
+            updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime.trim() === "" ? cachedMorning.time : finishedDateTime}`;
         } else if (now > eveningEnd) {
-              updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime === " " ? "16:30:00" : finishedDateTime}`;
-        } 
-      }
+            updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime.slice(11, 13) === "12" ? `${finishedDateTime.slice(0, 10)} 16:30:01` : finishedDateTime}`;
+        }
+      }    
       
     });
   } catch (error) {
@@ -365,22 +351,15 @@ function renderingResultNormal() {
   // Check if it's between 12:00:00 PM and 12:02:00 PM
   if (currentHour === 12 && (currentMinute === 0 || currentMinute === 1 || (currentMinute === 2 && currentSecond === 0))) {
       renderMorningInPage(cachedMorning.set, cachedMorning.value, cachedMorning.twod);
-      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime === " " ? "12:01:01" : finishedDateTime}`;
-
-      console.log(cachedMorning);
-      
+      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${cachedMorning.time}`;
   }
 
   // Check if it's between 4:29:00 PM and 4:31:00 PM
   if (currentHour === 16 && (currentMinute === 29 || currentMinute === 30 || (currentMinute === 31 && currentSecond === 0))) {
       renderEveningInPage(cachedEvening.set, cachedEvening.value, cachedEvening.twod);
-      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime === " " ? "16:30:00" : finishedDateTime}`;
+      updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${cachedEvening.time}`;
   }
-
-  
 }
-
- 
 
 // ✅ Render Evening Result
 function renderEveningInPage(itemSet, itemValue, itemTwod) {
@@ -403,10 +382,7 @@ function renderMorningInPage(itemSet, itemValue, itemTwod) {
 
 }
 
-
 renderingShowingLastResults();
-
-
 
 // ✅ Fetch and update main number
 async function fetchMainNumber() {
@@ -456,9 +432,4 @@ async function renderMainNumber() {
   }, 1000); // Change every 1 second
 }
 
-do {renderMainNumber();}
-while (isLiveActive);
-
-
-
-
+renderMainNumber();
