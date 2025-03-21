@@ -45,7 +45,7 @@ body {
 .dark-mode {
   --bg-color: #121212;
   --text-color:white;
-  --navi-bar-bg-color: #121212;
+  --navi-bar-bg-color:  #121212;
   --navi-bar-hover-color:  rgb(75, 75, 75);
   --box-bg-color: rgb(85, 58, 36);
   --box-bg-shadow:  0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 2px rgba(0, 0, 0, 0.12);
@@ -55,7 +55,7 @@ body {
   --result-digit-color:  rgba(254,243,236,1);
   --main-num-color: #3E3E3E;
   --mainnum-shadow:6px 1px 5px rgba(0, 0, 0, 0.4);
-  --sliding-bg-color: rgba(85, 58, 36, 0.6);
+  --sliding-bg-color:  #1E1E1E;
   --sliding-text-color:  #ffffff;
   --result-month-container: rgba(254,243,236,1);
   --tb-cell-border :rgba(254, 254, 254, 0.4);
@@ -68,7 +68,7 @@ body {
   --tooltip-color: black;
   --tb-bg-color: rgb(85, 58, 36);
   --tb-header-color: #3E3E3E;
-  --daybox-color: rgb(85, 58, 36);
+  --daybox-color:  rgb(85, 58, 36);
   --tb-digit-color:  #ff7272;
 }
 .light-mode {
@@ -139,7 +139,7 @@ p{
   display: initial;
 }
 
-.theme-switch-dark-visible{
+.theme-switch-light-visible{
   display: initial;
 }
 
