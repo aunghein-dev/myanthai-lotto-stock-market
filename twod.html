@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Burma-Thai 2D 3D</title>
+    <title>Myanmar Live 2D/3D</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,10 +31,22 @@
 
     <!-- Scrolling Text -->
     <div class="scrolling-text-wrapper">
-      <div class="scrolling-text" id="scrolling-text">Welcome to Mini</div>
+      <div class="scrolling-text" id="scrolling-text"></div>
     </div>
 
     <div class="number-live-area">
+      <div class="theme-switcher-container">
+        <img
+          class="theme-switch js-theme-switch theme-switch-light js-theme-switch-light"
+          data-theme="light"
+          src="icons/white-light-switch.svg"
+        />
+        <img
+          class="theme-switch js-theme-switch theme-switch-dark js-theme-switch-dark"
+          data-theme="dark"
+          src="icons/black-night-switch.svg"
+        />
+      </div>
       <div class="main-number">--</div>
       <div class="updated-time-container">
         <img src="icons/loading.svg" /> loading ...
@@ -86,7 +98,7 @@
           9:30 AM
         </div>
         <div class="mordern-internet-inner-box">
-          <div class="modern-internet-mini-header">Modern</div>
+          <div class="modern-internet-mini-header">Mordern</div>
           <div class="nine-thirty-mordern-result-main-page">--</div>
         </div>
         <div class="mordern-internet-inner-box">
@@ -100,7 +112,7 @@
           2:00 PM
         </div>
         <div class="mordern-internet-inner-box">
-          <div class="modern-internet-mini-header">Modern</div>
+          <div class="modern-internet-mini-header">Mordern</div>
           <div class="two-o-clock-mordern-result-main-page">--</div>
         </div>
         <div class="mordern-internet-inner-box">
@@ -113,5 +125,6 @@
     <script src="scripts/myan-twod.js"></script>
     <script src="scripts/modern-internet.js"></script>
     <script src="scripts/main-page.js"></script>
+    <script src="scripts/dark-light-toggle.js"></script>
   </body>
 </html>
