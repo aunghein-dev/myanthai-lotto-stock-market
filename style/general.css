@@ -63,14 +63,14 @@ body {
   --curr-date-box-border: rgb(255, 255, 255);
   --dayofmonth-text-color: rgba(213, 213, 213, 0.4);
   --header-box-month:  rgba(254,243,236,1);
-  --noti-back-bg-color: #ff9c67;
+  --noti-back-bg-color: #FF4444;
   --live-area-color:rgba(254,243,236,1);
   --time-update-color: rgb(85, 58, 36);
-  --tooltip-color: black;
+  --tooltip-color: white;
   --tb-bg-color: rgb(85, 58, 36);
   --tb-header-color: #3E3E3E;
   --daybox-color:#644632;
-  --tb-digit-color:  #ff7272;
+  --tb-digit-color: #ff7272;
   --month-selection-color:  #ff7272;
 }
 .light-mode {
