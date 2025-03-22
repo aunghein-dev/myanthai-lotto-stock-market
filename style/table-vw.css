@@ -5,7 +5,10 @@
   align-items: center;
   text-align: center;
   margin-top: -10px;
+  overflow-y: auto; /* ✅ Enables scrolling inside the container */
+  position: relative; /* ✅ Required for sticky to work */
 }
+
 .header-of-table-month{
   text-align: center;
   padding: 16px 20px;
@@ -36,10 +39,15 @@
   width: 100%;
   border: 0.2px solid var(--text-color);
   border-radius: 16px;
-  overflow: hidden; /* ✅ Prevents content overflow */
+  overflow: visible; /* ✅ Allow sticky elements to appear */
 }
 
-
+.table-vw-header{
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--tb-bg-color); /* ✅ Ensures visibility */
+}
 
 .ideal-row {
   border-bottom: 1px solid var(--text-color); /* Default closing border for each group */
@@ -71,6 +79,8 @@
   color: var(--tb-digit-color);
   font-weight: 700;
 }
+
+
 
 /* Default styles for smaller screens */
 .td-header-of-date,

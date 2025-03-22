@@ -27,6 +27,7 @@
   --tb-header-color: white;
   --daybox-color: white;
   --tb-digit-color:  #ff7272;
+  --month-selection-color: rgb(98, 68, 43);
 }
 
 body {
@@ -70,9 +71,10 @@ body {
   --tb-header-color: #3E3E3E;
   --daybox-color:  rgb(85, 58, 36);
   --tb-digit-color:  #ff7272;
+  --month-selection-color:  #ff7272;
 }
 .light-mode {
-  --bg-color: ghostwhite;
+  --bg-color: rgb(255, 255, 255);
   --text-color: rgb(53, 36, 22);
   --navi-bar-bg-color: rgb(85, 58, 36);
   --navi-bar-hover-color: rgb(98, 68, 43);
@@ -98,6 +100,7 @@ body {
   --tb-header-color: white;
   --daybox-color: white;
   --tb-digit-color:  #ff7272;
+  --month-selection-color: rgb(98, 68, 43);
 }
 
 p{

@@ -15,9 +15,16 @@
   z-index: 300;
 }
 
+.home-link img {
+  height: 36px;
+}
+
 .home-link {
+  border-radius: 5px;
+  background-color: var(--navi-bar-hover-color);
+  max-width: 16px;
   position: absolute;
-  left: 10px; /* Keeps the back button on the left */
+  left: 4px; /* Keeps the back button on the left */
 }
 
 .header-3D {

@@ -56,7 +56,7 @@
   color: var(--text-color);
   background: transparent;
   border: 0.6px solid var(--tb-cell-border);
-  border-radius: 48px;
+  border-radius: 20px;
   background-color: var(--daybox-color);
 }
 
@@ -124,7 +124,7 @@
   margin: 0 auto;
   font-size: 16px;
   font-weight: 700;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--box-bg-shadow);
 }
 
 table td.day-cell.today-date-box {

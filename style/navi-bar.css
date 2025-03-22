@@ -9,8 +9,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 4px;
+  padding-right: 4px;
   z-index: 1000;
 }
 
@@ -33,14 +33,14 @@
   margin-top: 3px;
 }
 .navi-right-section img{
-  padding: 9.999px 20px;
-  height: 30px;
+  padding: 9.999px 14px;
+  height: 24px;
   transition: scale 0.2, opacity 0.2;
   cursor: pointer;
 }
 
 .home-link img{
-  height: 40px;
+  height: 36px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -54,7 +54,9 @@
 }
 
 .home-link{
-  padding: 5px 20px;
+  border-radius: 5px;
+  background-color: var(--navi-bar-hover-color);
+  padding: 5px 16px;
   display: flex;
   flex-direction: row;
   justify-content: center;

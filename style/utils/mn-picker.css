@@ -1,0 +1,98 @@
+.picker-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto; 
+}
+
+.picker-container img:hover {
+  opacity: 0.7 !important;
+  transform: scale(1.1); /* Test if hover applies */
+}
+
+.picker-container img {
+  margin-left: -30px;
+}
+
+.picker-button {
+  border-radius: 10px;
+  height: 45px;
+  border: 1px solid white;
+  background: var(--navi-bar-color);
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: white;
+  padding-right: 40px;
+  transition: scale 0.3s;
+}
+
+.picker-button:hover {
+  scale: 1.04;
+}
+
+
+.picker-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--box-bg-color);
+  border-radius: 4px;
+  box-shadow: var(--box-bg-shadow);
+  display: none;
+  width: 200px;
+}
+.picker-dropdown.active {
+  display: block;
+}
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding: 10px;
+}
+.month-grid button {
+  position: relative;
+  z-index: 10;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+  color: var(--text-color);
+}
+.month-grid button:hover {
+  background: var(--month-selection-color);
+  color: white;
+}
+.month-grid button.selected {
+  background: var(--month-selection-color);
+  color: white;
+  font-weight: bold;
+}
+
+
+.year-selector {
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid var(--dotted-line-color);
+}
+.year-selector button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
