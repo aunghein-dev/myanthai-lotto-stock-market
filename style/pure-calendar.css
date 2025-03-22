@@ -7,7 +7,6 @@
 /*#table*/
 .pure-calendar-tb {
   margin-top: 20px;
-  margin-bottom: 100px;
   color: var(--text-color);
   border-collapse: separate;
   font-size: 1em;
@@ -55,8 +54,8 @@
 .pure-calendar-tb .day-cell {
   color: var(--text-color);
   background: transparent;
-  border: 0.6px solid var(--tb-cell-border);
-  border-radius: 20px;
+  border: 0.2px solid var(--tb-cell-border);
+  border-radius: 22px;
   background-color: var(--daybox-color);
 }
 

@@ -33,6 +33,7 @@
 }
 
 .picker-button {
+  font-size: 0.75rem;
   border-radius: 10px;
   height: 45px;
   border: 1px solid white;
