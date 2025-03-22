@@ -18,6 +18,7 @@
   justify-content: center;
   align-items: center;
   width: 230px;
+  border-radius: 16px;
   /* Center horizontally */
   margin: 0 auto;
   font-size: 16px;
@@ -208,6 +209,15 @@
 .styled-table td {
   border: 0.2px dotted var(--dotted-line-color);
   padding: 8px; /* Add some spacing for better visibility */
+}
+
+/* Apply border-radius to the first and last cells of the last row */
+.styled-table tr:last-child td:first-child {
+  border-bottom-left-radius: 16px;
+}
+
+.styled-table tr:last-child td:last-child {
+  border-bottom-right-radius: 16px;
 }
 
 /* Apply bottom border for all cells in the second row */
