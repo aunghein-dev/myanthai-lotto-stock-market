@@ -12,7 +12,7 @@
   white-space: nowrap; /* Prevents wrapping */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 520px) {
   .picker-container {
     position: relative; /* Prevents absolute positioning issues */
     left: auto;
