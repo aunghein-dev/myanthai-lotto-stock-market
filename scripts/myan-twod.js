@@ -76,6 +76,11 @@ async function isLiveTime() {
       isLiveActive =
         (now >= morningStart && now <= morningEnd) ||
         (now >= eveningStart && now < eveningEnd); 
+
+
+       isHoliday = false;
+    } else {
+      isHoliday = true
     }
 
     return isLiveActive;
@@ -84,6 +89,9 @@ async function isLiveTime() {
     return null;
   }
 }
+
+console.log(isLiveActive);
+
 
 
 async function startLiveFetch() {
@@ -170,8 +178,8 @@ async function fetchNewNumber() {
     const now = new Date();
     const morningTarget = new Date();
     const eveningTarget = new Date();
-    morningTarget.setHours(12, 1, 1, 0); // 12:01:01 PM
-    eveningTarget.setHours(16, 30, 0, 0) // 4:30:00 PM
+    morningTarget.setHours(12, 1, 0, 0); 
+    eveningTarget.setHours(16, 30, 0, 0) 
   
     if (
       now.getHours() === morningTarget.getHours() &&
@@ -338,14 +346,22 @@ async function renderingShowingLastResults() {
       }
     }
 
-      
+     
       if (!isLiveActive) {
         if (now > morningEnd && now < eveningStart) {
             updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime.trim() === "" ? cachedMorning.time : finishedDateTime}`;
+            console.log("In Morning");
+            
         } else if (now > eveningEnd) {
             updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime.slice(11, 13) === "12" ? `${finishedDateTime.slice(0, 10)} 16:30:01` : finishedDateTime}`;
+            console.log("In Evening");
+            
         }
       }    
+
+      if(isHoliday){
+        updatedTimeContainer.innerHTML = `<img src="icons/green-tick.svg" /> Updated at ${finishedDateTime}`;
+      }  
 
   } catch (error) {
     console.error("Error fetching finished results:", error);
