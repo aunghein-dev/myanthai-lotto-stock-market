@@ -16,10 +16,24 @@
     <link rel="stylesheet" href="style/loading-page.css" />
     <link rel="stylesheet" href="style/table-vw.css" />
     <link rel="stylesheet" href="style/pure-calendar.css" />
+    <link rel="stylesheet" href="style/utils/mn-picker.css" />
   </head>
   <body>
     <div class="tab-container">
       <a class="home-link" href="twod.html"><img src="icons/back.svg" /> </a>
+      <div class="picker-container">
+        <button class="picker-button" id="picker-button">Select Month</button>
+
+        <div class="picker-dropdown" id="picker-dropdown">
+          <div class="month-grid" id="month-grid"></div>
+          <div class="year-selector">
+            <button id="prev-year">&#9665;</button>
+            <span id="year-display">2024</span>
+            <button id="next-year">&#9655;</button>
+          </div>
+        </div>
+        <img src="icons/choose-month.svg" />
+      </div>
       <div class="tab">
         <button class="tab-button active" data-target="title-view">
           <img src="icons/title-view.svg" />
@@ -33,6 +47,7 @@
           <img src="icons/calendar-view.svg" />
           Calendar
         </button>
+
         <!--
           <button class="tab-button" data-target="live-view">
           <img src="icons/live-view.svg" />
@@ -73,5 +88,6 @@
     <script src="scripts/table-vw.js"></script>
     <script src="scripts/calendar-vw.js"></script>
     <script src="scripts/dark-light-toggle.js"></script>
+    <script src="scripts/utils/mn-picker.js"></script>
   </body>
 </html>
