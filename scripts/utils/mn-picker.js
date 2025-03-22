@@ -26,7 +26,12 @@ const months = [
 
 function updateYearDisplay() {
   yearDisplay.textContent = selectedYear;
+  
+  const currentYear = new Date().getFullYear();
+  nextYearButton.disabled = selectedYear >= currentYear; // Disable if at current year
 }
+
+updateYearDisplay(); // Call after setting up event listeners
 
 function populateMonths() {
   monthGrid.innerHTML = ""; 
