@@ -22,17 +22,23 @@ Our website is designed to provide:
 
 ## 📱 Mobile Screenshots
 
+## 📱 Mobile Screenshots
 
+### Light Mode
 <img src="https://github.com/user-attachments/assets/294086d9-34a6-4ad4-abb0-af22ec804db1" width="250">
-<img src="https://github.com/user-attachments/assets/3920bd79-2791-4ec5-964b-63f1f8943958" width="250">
-
-
 <img src="https://github.com/user-attachments/assets/4cc5ed90-b672-442a-afbf-8f594c29f3a5" width="250">
-<img src="https://github.com/user-attachments/assets/a3cd3a9e-2156-4e92-bc1a-f982e4c2ed17" width="250">
-
-
 <img src="https://github.com/user-attachments/assets/7ac86785-b9a6-45ef-8068-f08070cdf67c" width="250">
+
+
+### Dark Mode
+<img src="https://github.com/user-attachments/assets/3920bd79-2791-4ec5-964b-63f1f8943958" width="250">
+<img src="https://github.com/user-attachments/assets/a3cd3a9e-2156-4e92-bc1a-f982e4c2ed17" width="250">
 <img src="https://github.com/user-attachments/assets/18a55d84-dbe3-4a86-b55e-df4da4e5a675" width="250">
+
+
+
+
+
 
 
 
