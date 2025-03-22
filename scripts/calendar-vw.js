@@ -1,73 +1,63 @@
-async function generateCalendar() {
-
-  const currentDate = new Date();
-  let todayStr = currentDate.toISOString().split('T')[0];
+ function generateCalendar(startDateStr , excludeWeekends = true) {
+  const [startYear, startMonth] = startDateStr.split("-").map(Number);
+  const currentDate = new Date(startYear, startMonth - 1);
+  let todayStr = new Date().toISOString().split('T')[0];
   const container = document.getElementById("calendar-container");
-  const startYear = currentDate.getFullYear();
-  const startMonth = currentDate.getMonth();
-  const isTodayContainer =  (paramDtStr) =>  (paramDtStr === todayStr)? "today-date-box" : "" ;
+  const isTodayContainer = (paramDtStr) => (paramDtStr === todayStr) ? "today-date-box" : "";
 
   const formattedMonths = (formatYr, formatMn) => {
-    // Format the date to get full month name and year
-    const formattedDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(new Date(formatYr, formatMn - 1));
-    
-    // Return formatted as 'Month-YYYY'
-    return formattedDate.replace(' ', '-');
-  }
-  
-
-  // Calculate the end year and end month for the last 6 months
-  let endYear = startYear;
-  let endMonth = startMonth - 1;
-
-  if (endMonth < 0) {
-    endMonth += 12;
-    endYear--; // Adjust year if the month goes negative
-  }
+    return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(new Date(formatYr, formatMn - 1));
+  };
 
   let year = startYear;
-  let month = startMonth;
+  let month = startMonth - 1;
 
-  const startTime = Date.now(); // Capture the start time
-  const timeLimit = 500; // 500 ms time limit (adjustable)
+  let firstDay = new Date(year, month, 1).getDay();
+  firstDay = (firstDay === 0) ? 6 : firstDay - 1;
+  const lastDate = new Date(year, month + 1, 0).getDate();
 
-  let calendarHTML = ''; // Accumulate HTML content
+  let table = `
+    <table class="pure-calendar-tb">
+      <thead>
+        <tr class="pure-calendar-header">
+          <th class="tb-mon">Mon</th>
+          <th class="tb-tue">Tue</th>
+          <th class="tb-wed">Wed</th>
+          <th class="tb-thu">Thu</th>
+          <th class="tb-fri">Fri</th>
+          ${excludeWeekends ? '' : '<th class="tb-sat">Sat</th><th class="tb-sun">Sun</th>'}
+        </tr>
+      </thead>
+      <tbody>`;
 
-  while (year > endYear || (year === endYear && month >= endMonth)) {
-    // Check if time limit exceeded
-    if (Date.now() - startTime > timeLimit) {
-      console.warn('Time limit exceeded');
-      break; // Stop if time limit reached
+  let day = 1;
+  let rowContent = "<tr>";
+
+  for (let col = 0; col < 7; col++) {
+    if (col < firstDay) {
+      rowContent += "<td></td>";
+    } else if (day <= lastDate) {
+      let dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      rowContent += `
+        <td class="day-cell ${isTodayContainer(dateStr)}" data-date="${dateStr}">
+          <div class="day-container">
+            <div class="day-of-month">${day}</div>
+            <div class="day-result-container"> 
+              <div class="day-top" data-date="${dateStr}"></div>
+              <div class="day-bottom" data-date="${dateStr}"></div>
+            </div>
+          </div>
+        </td>`;
+      day++;
     }
+  }
+  rowContent += "</tr>";
+  table += rowContent;
 
-    let firstDay = new Date(year, month, 1).getDay();
-    firstDay = (firstDay === 0) ? 6 : firstDay - 1; // Adjust for Monday start
-    const lastDate = new Date(year, month + 1, 0).getDate();
-
-    let table = `
-      <table class="pure-calendar-tb">
-        <thead>
-          <tr class="pure-calendar-header">
-            <th class="tb-mon">Mon</th>
-            <th class="tb-tue">Tue</th>
-            <th class="tb-wed">Wed</th>
-            <th class="tb-thu">Thu</th>
-            <th class="tb-fri">Fri</th>
-            <th class="tb-sat">Sat</th>
-            <th class="tb-sun">Sun</th>
-          </tr>
-        </thead>
-        <tbody>`;
-
-    let day = 1;
-    let rowContent = "";
-
-    // First row (ensuring correct alignment)
+  while (day <= lastDate) {
     rowContent = "<tr>";
     for (let col = 0; col < 7; col++) {
-      if (col < firstDay) {
-        rowContent += "<td></td>"; // Empty cells before the first day
-      } else if (day <= lastDate) {
+      if (day <= lastDate) {
         let dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         rowContent += `
           <td class="day-cell ${isTodayContainer(dateStr)}" data-date="${dateStr}">
@@ -80,74 +70,31 @@ async function generateCalendar() {
             </div>
           </td>`;
         day++;
+      } else {
+        rowContent += "<td></td>";
       }
     }
     rowContent += "</tr>";
     table += rowContent;
-
-    // Remaining rows
-    while (day <= lastDate) {
-      rowContent = "<tr>";
-      for (let col = 0; col < 7; col++) {
-        if (day <= lastDate) {
-          let dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-          rowContent += `
-            <td class="day-cell ${isTodayContainer(dateStr)}" data-date="${dateStr}">
-              <div class="day-container">
-                <div class="day-of-month">${day}</div>
-                <div class="day-result-container"> 
-                  <div class="day-top" data-date="${dateStr}"></div>
-                  <div class="day-bottom" data-date="${dateStr}"></div>
-                </div>
-              </div>
-            </td>`;
-          day++;
-        } else {
-          rowContent += "<td></td>"; // Empty cells after last date
-        }
-      }
-      rowContent += "</tr>";
-      table += rowContent;
-    }
-
-    table += "</tbody></table>";
-
-    calendarHTML += `<div class="month-display-container">${formattedMonths(year, month + 1)}</div>` + table;
-
-    // Move to the previous month
-    month--;
-    if (month < 0) {
-      month = 11; // December
-      year--;
-    }
   }
 
-  // Add the entire calendar HTML at once
-  container.innerHTML = calendarHTML;
+  table += "</tbody></table>";
+  container.innerHTML = `<div class="month-display-container">${formattedMonths(year, month + 1)}</div>` + table;
 
-  // Select and remove Sat and Sun headers
-  const satHeaders = document.querySelectorAll('.pure-calendar-header .tb-sat');
-  const sunHeaders = document.querySelectorAll('.pure-calendar-header .tb-sun');
-  satHeaders.forEach(header => header.remove());
-  sunHeaders.forEach(header => header.remove());
-
-  // Select and remove all Saturday and Sunday cells
-  const saturdayCells = document.querySelectorAll('tbody tr td:nth-child(6)');
-  const sundayCells = document.querySelectorAll('tbody tr td:nth-child(7)');
-  saturdayCells.forEach(cell => cell.remove());
-  sundayCells.forEach(cell => cell.remove());
+  if (excludeWeekends) {
+    document.querySelectorAll('.pure-calendar-header .tb-sat, .pure-calendar-header .tb-sun').forEach(header => header.remove());
+    document.querySelectorAll('tbody tr td:nth-child(6), tbody tr td:nth-child(7)').forEach(cell => cell.remove());
+  }
 }
-
-generateCalendar();
 
 
 
 // Ensure rendering happens after all calendars are generated
-async function renderingResultsIntoCalendar() {
-  let targetMonthsArr = await fetchDataForLastTwoMonths();
+ function renderingResultsIntoCalendar() {
+  let targetMonthsArr = JSON.parse(localStorage.getItem('cached1MResult'));
   const today = new Date();
 
-  cachedData.forEach(value => {
+  targetMonthsArr.forEach(value => {
     let dateStr = value.date; 
     const dateValue = new Date(value.date);
     let dayTop = document.querySelector(`.day-top[data-date="${dateStr}"]`);
@@ -164,10 +111,7 @@ async function renderingResultsIntoCalendar() {
 // Wait for all calendars before rendering data
 async function generatePastMonths() {
   const now = new Date();
-  for (let i = 2; i >= 0; i--) {
-    let date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    await generateCalendar(date.getFullYear(), date.getMonth());
-  }
+  generateCalendar(localStorage.getItem("selectedDate") || new Date().toISOString().slice(0, 7));
   setTimeout(() => renderingResultsIntoCalendar(), 500); // Delay ensures DOM is ready
 }
 

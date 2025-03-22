@@ -1,34 +1,41 @@
-let cachedData = null; // Store fetched data here
+let cachedData = {}; // Store fetched data by month
 
-async function fetchDataForLastTwoMonths() {
-  if (cachedData) {
-    console.log("✅ Returning cached data");
-    return cachedData; // Return cached result if available
+async function fetchDataForMonth(monthString = null) {
+  let today = new Date();
+
+  // Extract year and month correctly from parameter
+  let [year, month] = monthString
+    ? monthString.split("-").map(Number)
+    : [today.getFullYear(), today.getMonth() + 1]; // Default: current month
+
+  // Ensure month is correctly set (month is 1-based, but Date() uses 0-based indexing)
+  let cacheKey = `${year}-${String(month).padStart(2, "0")}`;
+
+  if (cachedData[cacheKey]) {
+    console.log(`✅ Returning cached data for ${cacheKey}`);
+    return cachedData[cacheKey];
   }
+
+  let startDate = new Date(year, month - 1, 1); // Month - 1 because JavaScript months are 0-based
+  let endDate = new Date(year, month, 0); // Last day of the month
 
   let allDates = [];
-  let today = new Date();
-  
-  // Calculate the start date (2 months ago)
-  let startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 2);
-  
   let currentDate = new Date(startDate);
-  let todayStr = today.toISOString().split('T')[0];
-
-  while (currentDate.toISOString().split('T')[0] <= todayStr) {
-    allDates.push(currentDate.toISOString().split('T')[0]);
+  
+  while (currentDate <= endDate) {
+    allDates.push(currentDate.toISOString().split('T')[0]); // Format YYYY-MM-DD
     currentDate.setDate(currentDate.getDate() + 1);
   }
-  
+
   let allData = [];
+
 
   for (const date of allDates) {
     const apiUrl = `https://api.thaistock2d.com/2d_result?date=${date}`;
     try {
       const response = await fetch(apiUrl);
       if (!response.ok) {
-        console.warn(`Skipped ${date}: HTTP ${response.status}`);
+        console.warn(`⚠️ Skipped ${date}: HTTP ${response.status}`);
         continue;
       }
       const data = await response.json();
@@ -41,19 +48,39 @@ async function fetchDataForLastTwoMonths() {
     }
   }
 
-  cachedData = allData; // ✅ Store data in cache
+  cachedData[cacheKey] = allData; // ✅ Store in cache
   return allData;
 }
 
 
+async function main(param) {
+  let specificMonthData = await fetchDataForMonth(param); // Fetch for March 2025
+  
+  // Extract the month from the parameter
+  let targetMonth = param.split("-")[1];
 
+  // Filter the data instead of modifying the array during iteration
+  specificMonthData = specificMonthData.filter(value => value.date.split("-")[1] === targetMonth);
+
+  localStorage.setItem('cached1MResult', JSON.stringify(specificMonthData));
+
+}
+
+
+  main(localStorage.getItem("selectedDate") || new Date().toISOString().slice(0, 7));
+
+
+const formatDateToMonthYear = (dateStr) => {
+  const date = new Date(dateStr);
+  return new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(date);
+};
 const digitCountsByMonth = {};
 
 
-async function countNumForMonths() {
-  let targetMonthsArr = await fetchDataForLastTwoMonths();
+ function countNumForMonths() {
+  let targetMonthsArr = JSON.parse(localStorage.getItem('cached1MResult'));
 
-  const uniqueDates = [...new Set(cachedData.map(item => item.date.slice(0, 7)))];
+  const uniqueDates = [...new Set(targetMonthsArr.map(item => item.date.slice(0, 7)))];
 
   const formattedMonths = uniqueDates.map(dateStr => {
     const [year, month] = dateStr.split('-');
@@ -68,7 +95,7 @@ async function countNumForMonths() {
     const digitCounts = Array(10).fill(0); // Array of 10 zeros for digits 0-9
 
     // Iterate over targetMonthsArr to count digit occurrences
-    cachedData.forEach(value => {
+    targetMonthsArr.forEach(value => {
       const formattedValueDate = formatDateToMonthYear(value.date);
 
 
@@ -96,14 +123,8 @@ async function countNumForMonths() {
 
 }
 
-countNumForMonths();
 
 
-
-const formatDateToMonthYear = (dateStr) => {
-  const date = new Date(dateStr);
-  return new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(date);
-};
 
 const isActiveNum = (twod, innernum) => {
   return String(twod).includes(String(innernum)) ? 'active-b' : '';
@@ -116,13 +137,14 @@ const isDigitDuplicate = (towd, checkNum) => {
     : "";  
 };  
 
-async function renderingMonthVWContainer() {
+ function renderingMonthVWContainer() {
 
   let monthContainerHTML ='';
 
-  let targetMonthsArr = await fetchDataForLastTwoMonths();
+  let targetMonthsArr = JSON.parse(localStorage.getItem('cached1MResult'));
+  countNumForMonths();
 
-  const uniqueDates = [...new Set(cachedData.map(item => item.date.slice(0, 7)))];
+  const uniqueDates = [...new Set(targetMonthsArr.map(item => item.date.slice(0, 7)))];
 
   const formattedMonths = uniqueDates.map(dateStr => {
     const [year, month] = dateStr.split('-');
@@ -141,7 +163,7 @@ formattedMonths.reverse().forEach(month => {
   <div class="each-month-container ${className}-mn-container">
     <div class="header-of-table-month">${className}</div>
     <table class="styled-table ${className}-table">
-      <thead>
+      <thead class="table-vw-header">
         <tr>
           <th rowspan="2" class="td-header-of-date">Date</th>
           <th rowspan="2" class="td-header-of-time">Time</th>
@@ -162,7 +184,7 @@ formattedMonths.reverse().forEach(month => {
 
 
     
-    cachedData.reverse().forEach(value => {
+    targetMonthsArr.reverse().forEach(value => {
       if (!value || !value.child || !Array.isArray(value.child)) return;  // Check if child exists and is an array
     
       const className = `${(formatDateToMonthYear(value.date)).replace(/\s+/g, '-')}-table`;
@@ -192,9 +214,6 @@ formattedMonths.reverse().forEach(month => {
         console.warn(`Element with class "${className}" not found.`);
       }
     });
-    
-    
-
 }
 
 function formatDateToDayWeek(dateString) {
@@ -204,7 +223,6 @@ function formatDateToDayWeek(dateString) {
   return `${day} ${weekday}`;
 }
 
-
 async function renderFunctionsForTableVW() {
   const tableLoadingElement = document.querySelector('.loading-page-table');
   if (!tableLoadingElement) {
@@ -212,21 +230,24 @@ async function renderFunctionsForTableVW() {
     return;
   }
 
+  // ✅ Show loading indicator
   tableLoadingElement.innerHTML = '<img src="icons/loading.svg" /> loading data ...';
 
   try {
-    await renderingMonthVWContainer(); // Ensure this function finishes before clearing
+    // ✅ Wait for renderingMonthVWContainer() to complete before removing loading
+    await renderingMonthVWContainer();
   } catch (error) {
     console.error("Error in renderingMonthVWContainer:", error);
   }
 
-  // Ensure only the table loading element is cleared
-  tableLoadingElement.innerHTML = ''; 
+  // ✅ Hide loading indicator only after the function completes
+  tableLoadingElement.innerHTML = '';
 }
 
-async function runRenderProcesses() {
-  await renderFunctionsForTitleVW();
-  await renderFunctionsForTableVW();
+
+ function runRenderProcesses() {
+   renderFunctionsForTitleVW();
+   renderFunctionsForTableVW();
 
   // Remove background color after loading is done
   document.querySelectorAll('.loading-page, .loading-page-title, .loading-page-table')
