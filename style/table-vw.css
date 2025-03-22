@@ -31,6 +31,8 @@
 .styled-table {
   background-color: var(--tb-bg-color);
   margin-top: 30px;
+  margin-bottom: 4px;
+  border-radius: 16px;
   color: var(--text-color);
   border-collapse: separate; /* ✅ Allows border-radius to work */
   border-spacing: 0;
