@@ -8,10 +8,6 @@ Welcome to the **Burma Thai Stock Lottery Real-Time Live** project! This platfor
 
 ---
 
-<img src="https://github.com/user-attachments/assets/833140b6-0acc-43f2-8e54-7c0c8b29e815" alt="IMG_4165" width="300" />
-
-
-
 ## 🌐 Website Overview
 Our website is designed to provide:
 - **Real-Time Lottery Results:** Stay updated with live results as they happen.
@@ -20,17 +16,23 @@ Our website is designed to provide:
 - **Responsive Design:** Optimized for both desktop and mobile devices.
 
 
-<img src="https://github.com/user-attachments/assets/eaba72cf-202e-4d97-8db8-ff9a4dcc3c0c" alt="IMG_4166" width="300" />
-
-
-
----
-
 ## 🔥 Features
 - **Live Updates:** Instant, real-time display of lottery results.
 - **Result Analysis:** Analyze trends to make informed decisions.
 
-<img src="https://github.com/user-attachments/assets/050c4ce8-414d-442d-befc-10d3c78ac7f6" alt="IMG_4166" width="300" />
+## 📱 Mobile Screenshots
+
+### Light Mode
+<img src="https://github.com/user-attachments/assets/294086d9-34a6-4ad4-abb0-af22ec804db1" width="250">
+<img src="https://github.com/user-attachments/assets/1ef34e6c-39e9-490f-9b67-258491ee978c" width="250">
+
+### Dark Mode
+<img src="https://github.com/user-attachments/assets/4cc5ed90-b672-442a-afbf-8f594c29f3a5" width="250">
+<img src="https://github.com/user-attachments/assets/a3cd3a9e-2156-4e92-bc1a-f982e4c2ed17" width="250">
+
+### Additional Screens
+<img src="https://github.com/user-attachments/assets/7ac86785-b9a6-45ef-8068-f08070cdf67c" width="250">
+<img src="https://github.com/user-attachments/assets/18a55d84-dbe3-4a86-b55e-df4da4e5a675" width="250">
 
 
 
