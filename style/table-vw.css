@@ -211,14 +211,6 @@
   padding: 8px; /* Add some spacing for better visibility */
 }
 
-/* Apply border-radius to the first and last cells of the last row */
-.styled-table tr:last-child td:first-child {
-  border-bottom-left-radius: 16px;
-}
-
-.styled-table tr:last-child td:last-child {
-  border-bottom-right-radius: 16px;
-}
 
 /* Apply bottom border for all cells in the second row */
 .evening-row-twod td,
