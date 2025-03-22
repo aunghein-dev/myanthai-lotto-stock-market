@@ -31,14 +31,13 @@
 .styled-table {
   background-color: var(--tb-bg-color);
   margin-top: 30px;
-  margin-bottom: 4px;
-  border-radius: 16px;
   color: var(--text-color);
   border-collapse: separate; /* ✅ Allows border-radius to work */
   border-spacing: 0;
   font-size: 0.8em;
   width: 100%;
   border: 0.2px solid var(--text-color);
+
   border-radius: 16px;
   overflow: visible; /* ✅ Allow sticky elements to appear */
 }
@@ -208,9 +207,9 @@
 .styled-table th,
 .styled-table td {
   border: 0.2px dotted var(--dotted-line-color);
+  
   padding: 8px; /* Add some spacing for better visibility */
 }
-
 
 /* Apply bottom border for all cells in the second row */
 .evening-row-twod td,
@@ -219,14 +218,14 @@
   padding-bottom: 5px; /* Adds space between content and border */
 }
 
+tbody:last-of-type tr:last-child th:last-child {
+  border-bottom-right-radius: 16px;
+}
+
+
+
 /* Ensure rowspan cell gets a bottom border */
 td[rowspan] {
   border-bottom: 0.2px solid var(--dotted-line-color);
-}
+} 
 
-
-/* Alternative for modern browsers
-tr:has(td[rowspan]) td[rowspan] {
-  border-bottom: 0.2px solid var(--dotted-line-color);
-}
- */
