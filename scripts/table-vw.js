@@ -184,37 +184,45 @@ formattedMonths.reverse().forEach(month => {
 
 
     
-    targetMonthsArr.reverse().forEach(value => {
+    targetMonthsArr.reverse().forEach((value, index, arr) => {
       if (!value || !value.child || !Array.isArray(value.child)) return;  // Check if child exists and is an array
     
       const className = `${(formatDateToMonthYear(value.date)).replace(/\s+/g, '-')}-table`;
       const element = document.querySelector(`.${className}`);
+      let customClass = ""; 
     
       if (element) {
         const twod1 = value.child[1]?.twod || "--"; // Use optional chaining and default fallback
         const twod3 = value.child[3]?.twod || "--";
-            
+    
+        if (index === arr.length - 1) { // Check if this is the last row after reversing
+          customClass = `style="border-bottom: 0.2px solid var(--dotted-line-color); border-bottom-left-radius: 16px;"`;
+        }
+      
     
         element.innerHTML += `
         <tbody>
           ${[["12:01 PM", twod1], ["4:30 PM", twod3]]
             .map(([time, twod]) => `
               <tr${time === "4:30 PM" ? ' class="evening-row-twod"' : ""}>
-                ${time === "12:01 PM" ? `<td rowspan="2">${formatDateToDayWeek(value.date)}</td>` : ""}
+                ${time === "12:01 PM" ? `<td rowspan="2" ${customClass}>${formatDateToDayWeek(value.date)}</td>` : ""}
                 <td>${time}</td>
                 <td class="main-result-twod-table">${twod}</td>
                 ${Array.from({ length: 10 }, (_, i) => `
-                  <th class="inner-num ${isActiveNum(twod, i)}">${i} ${isDigitDuplicate(twod, i)}</th>
+                  <th class="inner-num ${isActiveNum(twod, i)}" >${i} ${isDigitDuplicate(twod, i)}</th>
                 `).join("")}
               </tr>
             `).join("")}
         </tbody>`;
-      
+    
       } else {
         console.warn(`Element with class "${className}" not found.`);
       }
     });
+    
 }
+
+
 
 function formatDateToDayWeek(dateString) {
   const date = new Date(dateString);
